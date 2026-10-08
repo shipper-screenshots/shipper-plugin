@@ -1,0 +1,31 @@
+{
+  "name": "shipper",
+  "version": "1.0.0",
+  "description": "Your complete App Store workflow, inside Codex.",
+  "author": {
+    "name": "Shipper"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Shipper",
+    "shortDescription": "Design, Localize & Ship",
+    "longDescription": "Your complete App Store workflow, inside Codex.\n\nShipper Plugin connects Codex to the Shipper macOS app. It gives Codex the tools and creative intelligence to:\n\n- understand your app benefits and plan a screenshot story;\n- design compelling screenshots and edit Shipper canvases with text, assets and device mockups;\n- adapt designs across Apple device specifications;\n- write your metadata;\n- localize your screenshots and metadata;\n- upload your screenshots and metadata to App Store Connect.\n\nDesign. Adapt. Localize. Ship. Right from Codex.",
+    "developerName": "Shipper",
+    "category": "Developer Tools",
+    "logo": "./assets/shipper-logo.png",
+    "composerIcon": "./assets/shipper-logo.png",
+    "websiteURL": "https://shipper-screenshots.com",
+    "privacyPolicyURL": "https://shipper-screenshots.com/legal-pages/privacy-policy",
+    "termsOfServiceURL": "https://shipper-screenshots.com/legal-pages/terms-of-use",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Create a screenshot set for my app.",
+      "Localize my screenshots and metadata into French.",
+      "Ship all my screenshots and metadata to App Store Connect."
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "shipper",
+  "interface": {
+    "displayName": "Shipper"
+  },
+  "plugins": [
+    {
+      "name": "shipper",
+      "source": {
+        "source": "local",
+        "path": "./plugins/shipper"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

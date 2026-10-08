@@ -1,0 +1,143 @@
+#!/bin/zsh
+
+set -eu
+setopt pipefail
+
+readonly production_app_path="/Applications/Shipper.app"
+readonly expected_app_identifier="com.mycompany.shipper"
+readonly expected_helper_identifier="com.mycompany.shipper.mcp"
+readonly expected_team_identifier="9Q7Z368GUY"
+readonly expected_app_group="group.com.mycompany.shipper.mcp"
+
+fail() {
+    local code="$1"
+    local message="$2"
+    print -u2 -- "Shipper runtime resolution failed [${code}]: ${message}"
+    exit 78
+}
+
+signature_field() {
+    local details="$1"
+    local field="$2"
+    print -r -- "$details" | /usr/bin/awk -F= -v field="$field" \
+        '$1 == field { print substr($0, length(field) + 2); exit }'
+}
+
+has_expected_app_group() {
+    local details="$1"
+    print -r -- "$details" | /usr/bin/grep -Fq -- "$expected_app_group"
+}
+
+runtime_mode="${SHIPPER_MCP_RUNTIME_MODE:-production}"
+app_path="$production_app_path"
+codesign_path="/usr/bin/codesign"
+validate_only="0"
+# Fixed-installation read-only preflight for Phase 11 lifecycle. Never starts a helper.
+if [[ "${1:-}" == "--validate-installation" ]]; then
+    [[ "$#" == "1" ]] || fail "invalid_validation_arguments" "Installation validation accepts no other arguments."
+    validate_only="1"
+    shift
+fi
+
+case "$runtime_mode" in
+    production)
+        if [[ -n "${SHIPPER_MCP_DEVELOPMENT_APP_PATH:-}" || \
+              -n "${SHIPPER_MCP_DEVELOPMENT_CODESIGN_PATH:-}" || \
+              -n "${SHIPPER_MCP_DEVELOPMENT_VALIDATE_ONLY:-}" ]]; then
+            fail "development_override_not_enabled" "Development overrides require explicit development mode."
+        fi
+        ;;
+    development)
+        app_path="${SHIPPER_MCP_DEVELOPMENT_APP_PATH:-}"
+        [[ -n "$app_path" && "$app_path" == /* ]] || \
+            fail "invalid_development_override" "Development mode requires an absolute Shipper app path."
+
+        if [[ -n "${SHIPPER_MCP_DEVELOPMENT_CODESIGN_PATH:-}" ]]; then
+            codesign_path="$SHIPPER_MCP_DEVELOPMENT_CODESIGN_PATH"
+            [[ "$codesign_path" == /* && -x "$codesign_path" ]] || \
+                fail "invalid_development_override" "The development signing inspector is invalid."
+        fi
+
+        development_validate_only="${SHIPPER_MCP_DEVELOPMENT_VALIDATE_ONLY:-0}"
+        [[ "$development_validate_only" == "0" || "$development_validate_only" == "1" ]] || \
+            fail "invalid_development_override" "The development validation mode is invalid."
+        if [[ "$development_validate_only" == "1" ]]; then
+            validate_only="1"
+        fi
+        ;;
+    *)
+        fail "invalid_runtime_mode" "Runtime mode must be production or development."
+        ;;
+esac
+
+[[ ! -L "$app_path" ]] || \
+    fail "invalid_bundle_location" "The authoritative Shipper app must not be a symbolic link."
+[[ -d "$app_path" ]] || \
+    fail "shipper_missing" "Install Shipper in /Applications before using the Shipper Plugin."
+
+canonical_app_path="$(builtin cd -P -- "$app_path" 2>/dev/null && builtin pwd -P)" || \
+    fail "invalid_bundle_location" "The authoritative Shipper app location is unavailable."
+
+info_path="${canonical_app_path}/Contents/Info.plist"
+[[ -f "$info_path" ]] || \
+    fail "invalid_bundle_metadata" "The authoritative Shipper app metadata is missing."
+
+app_identifier="$(/usr/bin/plutil -extract CFBundleIdentifier raw -o - "$info_path" 2>/dev/null)" || \
+    fail "invalid_bundle_metadata" "The authoritative Shipper app metadata is invalid."
+[[ "$app_identifier" == "$expected_app_identifier" ]] || \
+    fail "invalid_bundle_identity" "The app at the authoritative location is not Shipper."
+
+contents_path="${canonical_app_path}/Contents"
+macos_path="${contents_path}/MacOS"
+helper_path="${macos_path}/shipper-mcp"
+
+[[ ! -L "$contents_path" && ! -L "$macos_path" && ! -L "$helper_path" ]] || \
+    fail "invalid_helper_location" "The bundled Shipper MCP helper location is invalid."
+[[ -f "$helper_path" ]] || \
+    fail "helper_missing" "The authoritative Shipper app does not contain its MCP helper."
+[[ -x "$helper_path" ]] || \
+    fail "helper_not_executable" "The bundled Shipper MCP helper is not executable."
+
+canonical_macos_path="$(builtin cd -P -- "$macos_path" 2>/dev/null && builtin pwd -P)" || \
+    fail "invalid_helper_location" "The bundled Shipper MCP helper location is unavailable."
+[[ "$canonical_macos_path" == "${canonical_app_path}/Contents/MacOS" ]] || \
+    fail "invalid_helper_location" "The MCP helper does not belong to the authoritative Shipper app."
+
+$codesign_path --verify --strict "$helper_path" >/dev/null 2>&1 || \
+    fail "invalid_helper_signature" "The bundled Shipper MCP helper signature is invalid."
+$codesign_path --verify --deep --strict "$canonical_app_path" >/dev/null 2>&1 || \
+    fail "invalid_app_signature" "The authoritative Shipper app signature is invalid."
+
+app_signature="$($codesign_path -dvvv "$canonical_app_path" 2>&1)" || \
+    fail "invalid_app_signature" "The authoritative Shipper app signature cannot be inspected."
+helper_signature="$($codesign_path -dvvv "$helper_path" 2>&1)" || \
+    fail "invalid_helper_signature" "The bundled Shipper MCP helper signature cannot be inspected."
+
+[[ "$(signature_field "$app_signature" "Identifier")" == "$expected_app_identifier" ]] || \
+    fail "invalid_bundle_identity" "The authoritative Shipper app signing identity is invalid."
+[[ "$(signature_field "$helper_signature" "Identifier")" == "$expected_helper_identifier" ]] || \
+    fail "invalid_helper_identity" "The bundled Shipper MCP helper signing identity is invalid."
+
+app_team_identifier="$(signature_field "$app_signature" "TeamIdentifier")"
+helper_team_identifier="$(signature_field "$helper_signature" "TeamIdentifier")"
+[[ "$app_team_identifier" == "$expected_team_identifier" && \
+   "$helper_team_identifier" == "$expected_team_identifier" ]] || \
+    fail "incompatible_runtime" "Shipper and its MCP helper do not have the expected signing authority."
+
+app_entitlements="$($codesign_path -d --entitlements - "$canonical_app_path" 2>&1)" || \
+    fail "invalid_app_signature" "The authoritative Shipper app entitlements cannot be inspected."
+helper_entitlements="$($codesign_path -d --entitlements - "$helper_path" 2>&1)" || \
+    fail "invalid_helper_signature" "The bundled Shipper MCP helper entitlements cannot be inspected."
+
+has_expected_app_group "$app_entitlements" || \
+    fail "incompatible_runtime" "The authoritative Shipper app is missing the required MCP App Group."
+has_expected_app_group "$helper_entitlements" || \
+    fail "incompatible_runtime" "The bundled Shipper MCP helper is missing the required App Group."
+
+if [[ "$validate_only" == "1" ]]; then
+    print -r -- "shipper_runtime_ok"
+    exit 0
+fi
+
+exec "$helper_path" "$@"
+fail "helper_launch_failed" "The bundled Shipper MCP helper could not be launched."

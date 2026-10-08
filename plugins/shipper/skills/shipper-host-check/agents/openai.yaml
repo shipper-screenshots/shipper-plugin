@@ -1,0 +1,3 @@
+interface:
+  display_name: "Check Shipper Connection"
+  short_description: "Check whether Codex can work with Shipper."

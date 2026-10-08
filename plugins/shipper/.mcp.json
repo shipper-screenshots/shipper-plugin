@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "shipper_plugin_mcp": {
+      "command": "./bin/shipper-mcp-resolver",
+      "args": [],
+      "cwd": "."
+    }
+  }
+}

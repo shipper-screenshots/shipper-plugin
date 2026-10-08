@@ -1,0 +1,3 @@
+interface:
+  display_name: "Localize App Store Content"
+  short_description: "Translate screenshots and metadata into locales."

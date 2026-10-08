@@ -1,0 +1,156 @@
+{
+  "version": "primary-metadata-plugin-02",
+  "invariants": {
+    "metadataRequiresExplicitIntent": true,
+    "targetGrantsEntitlement": false,
+    "createOverwritesOccupied": false,
+    "secondaryUsesSourceWriter": false,
+    "silentTruncation": false,
+    "blindReplay": false,
+    "globalWorkflowAtomicity": false,
+    "ascPublication": false
+  },
+  "decisions": {
+    "contentScope": {
+      "rules": [
+        {"when": {"screenshotsRequested": true, "metadataRequested": false}, "action": "screenshots_only"},
+        {"when": {"screenshotsRequested": true, "metadataRequested": true}, "action": "compose_independent_capabilities"},
+        {"when": {"screenshotsRequested": false, "metadataRequested": true}, "action": "metadata_only"}
+      ],
+      "fallback": "clarify_content_scope"
+    },
+    "entitlement": {
+      "rules": [
+        {"when": {"metadataAvailability": "available"}, "action": "continue_metadata"},
+        {"when": {"metadataAvailability": "requires_pro"}, "action": "refuse_metadata_keep_independent_work"},
+        {"when": {"metadataAvailability": "entitlement_unknown"}, "action": "stop_metadata_verification_required"}
+      ],
+      "fallback": "stop_metadata_unsupported"
+    },
+    "sourceLanguage": {
+      "rules": [
+        {"when": {"knownSourceLocale": true}, "action": "use_exact_source_locale"},
+        {"when": {"sourceLocaleUnd": true, "authorityConflict": true}, "action": "stop_language_conflict"},
+        {"when": {"sourceLocaleUnd": true, "authorityAmbiguous": true}, "action": "ask_source_language"},
+        {"when": {"verifiedTargetPrimary": true}, "action": "use_target_primary"},
+        {"when": {"verifiedTargetPrimary": false, "explicitSourceLanguageResolved": true}, "action": "use_explicit_language"},
+        {"when": {"verifiedTargetPrimary": false, "explicitSourceLanguageResolved": false, "oneEstablishedProjectLanguage": true}, "action": "use_established_language"}
+      ],
+      "fallback": "ask_source_language"
+    },
+    "localeScope": {
+      "rules": [
+        {"when": {"explicitLocales": true, "secondaryLocalizationRequested": true}, "action": "exact_requested_locales"},
+        {"when": {"explicitLocales": false, "secondaryLocalizationRequested": true, "verifiedTargetPrimary": true}, "action": "target_secondaries"},
+        {"when": {"secondaryLocalizationRequested": false}, "action": "source_only"},
+        {"when": {"explicitLocales": false, "verifiedTargetPrimary": false, "sourceLanguageResolved": true}, "action": "source_only"}
+      ],
+      "fallback": "ask_source_language"
+    },
+    "sourceMutationScope": {
+      "rules": [
+        {"when": {"explicitSecondaryOnly": true}, "action": "source_read_only"},
+        {"when": {"explicitSecondaryOnly": false, "sourceMetadataRequested": true}, "action": "source_mutation_in_scope"}
+      ],
+      "fallback": "source_read_only"
+    },
+    "localeResolution": {
+      "rules": [
+        {"when": {"resolution": "resolved"}, "action": "use_exact_identifier"},
+        {"when": {"resolution": "ambiguous"}, "action": "ask_regional_variant"},
+        {"when": {"resolution": "unavailable"}, "action": "stop_unavailable_locale"}
+      ],
+      "fallback": "stop_unresolved_locale"
+    },
+    "executionOrder": {
+      "rules": [
+        {"when": {"sourceMutation": true, "secondariesRequested": true}, "action": "source_then_secondaries"},
+        {"when": {"sourceMutation": false, "secondariesRequested": true}, "action": "source_read_only_then_secondaries"},
+        {"when": {"sourceMutation": true, "secondariesRequested": false}, "action": "source_only"}
+      ],
+      "fallback": "stop_invalid_scope"
+    },
+    "intent": {
+      "rules": [
+        {"when": {"requestIntent": "create"}, "action": "fill_missing_only"},
+        {"when": {"requestIntent": "rewrite"}, "action": "update_exact_scope"},
+        {"when": {"requestIntent": "improve"}, "action": "update_exact_scope"}
+      ],
+      "fallback": "clarify_metadata_intent"
+    },
+    "field": {
+      "rules": [
+        {"when": {"intent": "fill", "state": "missing", "applicable": true}, "action": "generate"},
+        {"when": {"intent": "fill", "state": "empty", "applicable": true}, "action": "generate"},
+        {"when": {"intent": "fill", "state": "existing"}, "action": "preserve"},
+        {"when": {"intent": "update", "fieldRequested": true}, "action": "generate_scoped_update"},
+        {"when": {"intent": "update", "fieldRequested": false}, "action": "preserve"}
+      ],
+      "fallback": "preserve"
+    },
+    "occupiedReplacement": {
+      "rules": [
+        {"when": {"intent": "fill", "occupiedReplacementNeeded": true, "approvedCurrentValue": false}, "action": "ask_field_specific_approval"},
+        {"when": {"intent": "fill", "occupiedReplacementNeeded": true, "approvedCurrentValue": true, "freshObservation": true}, "action": "update_approved_field_only"}
+      ],
+      "fallback": "preserve_occupied"
+    },
+    "sourcePrerequisite": {
+      "rules": [
+        {"when": {"secondaryRequested": true, "sourceSufficient": true}, "action": "localize_exact_secondaries"},
+        {"when": {"secondaryRequested": true, "sourceSufficient": false}, "action": "ask_complete_source_first"}
+      ],
+      "fallback": "source_workflow"
+    },
+    "whatsNew": {
+      "rules": [
+        {"when": {"applicability": "applicable", "requested": true}, "action": "include"},
+        {"when": {"applicability": "not_applicable"}, "action": "omit"},
+        {"when": {"applicability": "unknown"}, "action": "omit_unknown"}
+      ],
+      "fallback": "preserve"
+    },
+    "validation": {
+      "rules": [
+        {"when": {"candidateValid": true}, "action": "commit_once"},
+        {"when": {"candidateValid": false, "refinementCount": 0}, "action": "rewrite_invalid_then_validate"},
+        {"when": {"candidateValid": false, "refinementCount": 1}, "action": "stop_invalid"}
+      ],
+      "fallback": "stop_invalid"
+    },
+    "retry": {
+      "rules": [
+        {"when": {"cause": "source_language_mismatch", "causeKnown": true, "requestCorrectsCause": true, "authorityValid": true}, "action": "one_corrected_request"},
+        {"when": {"cause": "read_failed"}, "action": "stop_no_retry"},
+        {"when": {"cause": "invalid_argument", "causeKnown": false}, "action": "stop_no_retry"},
+        {"when": {"equivalentRequest": true}, "action": "stop_no_retry"}
+      ],
+      "fallback": "stop_no_retry"
+    },
+    "stale": {
+      "rules": [
+        {"when": {"stale": true}, "action": "reobserve_reconsider_revalidate_new_transaction"}
+      ],
+      "fallback": "continue_current_authority"
+    },
+    "uncertainty": {
+      "rules": [
+        {"when": {"outcome": "unknown"}, "action": "reconcile_no_replay"},
+        {"when": {"receipt": "not_found_in_session"}, "action": "remain_unknown_no_replay"},
+        {"when": {"receipt": "applied"}, "action": "report_canonical_persistence"},
+        {"when": {"receipt": "no_change"}, "action": "report_canonical_persistence"}
+      ],
+      "fallback": "report_observed_result"
+    },
+    "persistence": {
+      "rules": [
+        {"when": {"state": "saved", "savedCoversCommit": true}, "action": "report_saved"},
+        {"when": {"state": "pending"}, "action": "report_applied_save_pending"},
+        {"when": {"state": "saving"}, "action": "report_applied_save_pending"},
+        {"when": {"state": "failed"}, "action": "report_applied_not_saved"},
+        {"when": {"state": "needsUserAction"}, "action": "report_applied_action_required"}
+      ],
+      "fallback": "report_save_unproven"
+    }
+  }
+}

@@ -1,0 +1,429 @@
+{
+  "capability": {
+    "bridgeVersion": "v7",
+    "contractVersion": "mcp-project-lifecycle-03",
+    "encoding": "canonical-base64",
+    "lifecycle": [
+      "begin reserves canonical capacity and binds fresh project/session/activation plus this connection; transferRef is not stagedSourceRef.",
+      "append uses exact nextOffset with canonical base64; no replay, missing/out-of-order chunk or size overflow. No synchronous wait for future chunks.",
+      "finalize validates original bytes once and creates stagedSourceRef only after canonical validation; use status on lost response, never replay finalize.",
+      "status returns receiving/finalized/cancelled/failed with original expiresAt; finalized includes canonical receipt while available. Expired/missing or consumed authority is an error, never revived.",
+      "cancel releases receiving capacity. Disconnect cancels receiving files. A dead writer is swept on the next canonical store access; TTL bounds abandoned storage even if authority is unavailable.",
+      "A receipt survives connection closure in the canonical store until original expiry or consumption; transferRef does not survive connection closure.",
+      "Consumption is consumer-specific: successful Managed Image creation commits and successful Screenshot Source set/replace consume stagedSourceRef; Screenshot Source noChange also consumes it without a Canvas revision or Undo unit. Authorized source refs remain reusable while fresh. Proven harmless pre-commit failure retains staged retryability within the original TTL. Committed consumption may finish cleanup as pending, never making a successful or uncertain mutation replayable; observe uncertain mutations, never replay them.",
+      "Rates use fixed 60-second windows per helper connection. Storage quotas and validation lock are shared by CLI and native adapters. No unlimited queue; receiving expires at original TTL.",
+      "Local artifact reading/encoding/chunk submission must remain programmatic and off model context. No payload logs/examples. No local path accepted by this tool or Canvas mutation.",
+      "Approval required, user decline/cancel, staging validation error, transport/process failure and Managed Image mutation failure are distinct. No import failure before an import was attempted; respect declined execution without repeat requests."
+    ],
+    "maxActiveArtifacts": 64,
+    "maxActiveArtifactsPerSession": 8,
+    "maxBeginsPerMinutePerConnection": 16,
+    "maxCompressedBytes": 33554432,
+    "maxDecodedChunkBytes": 8192,
+    "maxEncodedChunkBytes": 10924,
+    "maxFailuresPerMinutePerConnection": 16,
+    "maxFinalizesPerMinutePerConnection": 8,
+    "maxHeight": 8192,
+    "maxMetadataBytes": 1048576,
+    "maxReceivingPerConnection": 8,
+    "maxRecordsPerConnection": 64,
+    "maxRequestBytes": 1048576,
+    "maxTotalPixels": 24000000,
+    "maxTotalStagedBytes": 268435456,
+    "maxWidth": 8192,
+    "partialRequestTimeoutSeconds": 30,
+    "serverVersion": "6.3.0",
+    "tool": "transfer_inbound_artifact",
+    "ttlSeconds": 300
+  },
+  "definition": {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Technical bounded PNG transfer in the already-connected helper; no image bytes through app bridge or Canvas mutations. Programmatically read/encode/submit bytes, never copy payload through model context or print it. Begin binds project/session/activation and this MCP connection. Append strict sequential offsets; accepted-handle append/finalize failures terminate that upload. Finalize returns canonical receipt only after validation; repeated finalize is rejected, use status after a lost response. Status never extends TTL. Cancel receiving uploads; disconnect abandons them. Use the generated native staging reference. Do not reuse transfer handles across connections. No file paths accepted.",
+    "inputSchema": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expectedByteCount": {
+              "maximum": 33554432,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "expectedSHA256": {
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "mediaCategory": {
+              "enum": [
+                "image"
+              ],
+              "type": "string"
+            },
+            "operation": {
+              "enum": [
+                "begin"
+              ],
+              "type": "string"
+            },
+            "projectID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "projectSessionID": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "required": [
+            "expectedByteCount",
+            "expectedSHA256",
+            "mediaCategory",
+            "operation",
+            "projectID",
+            "projectSessionID"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "data": {
+              "maxLength": 10924,
+              "minLength": 4,
+              "type": "string"
+            },
+            "offset": {
+              "maximum": 33554432,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "operation": {
+              "enum": [
+                "append"
+              ],
+              "type": "string"
+            },
+            "projectID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "projectSessionID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "transferRef": {
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "data",
+            "offset",
+            "operation",
+            "projectID",
+            "projectSessionID",
+            "transferRef"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "operation": {
+              "enum": [
+                "finalize"
+              ],
+              "type": "string"
+            },
+            "projectID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "projectSessionID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "transferRef": {
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "operation",
+            "projectID",
+            "projectSessionID",
+            "transferRef"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "operation": {
+              "enum": [
+                "cancel"
+              ],
+              "type": "string"
+            },
+            "projectID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "projectSessionID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "transferRef": {
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "operation",
+            "projectID",
+            "projectSessionID",
+            "transferRef"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "operation": {
+              "enum": [
+                "status"
+              ],
+              "type": "string"
+            },
+            "projectID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "projectSessionID": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "transferRef": {
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "operation",
+            "projectID",
+            "projectSessionID",
+            "transferRef"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "object"
+    },
+    "name": "transfer_inbound_artifact",
+    "outputSchema": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expiresAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "maxDecodedChunkBytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "nextOffset": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "state": {
+              "enum": [
+                "receiving"
+              ],
+              "type": "string"
+            },
+            "transferRef": {
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "state",
+            "nextOffset",
+            "expiresAt"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expiresAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "nextOffset": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "receipt": {
+              "additionalProperties": false,
+              "properties": {
+                "expiresAt": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "media": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "height": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "mimeType": {
+                      "enum": [
+                        "image/png"
+                      ],
+                      "type": "string"
+                    },
+                    "width": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "mimeType",
+                    "width",
+                    "height"
+                  ],
+                  "type": "object"
+                },
+                "stagedSourceRef": {
+                  "maxLength": 64,
+                  "minLength": 64,
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "verifiedByteCount": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "verifiedSHA256": {
+                  "maxLength": 64,
+                  "minLength": 64,
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "stagedSourceRef",
+                "verifiedByteCount",
+                "verifiedSHA256",
+                "media",
+                "expiresAt"
+              ],
+              "type": "object"
+            },
+            "state": {
+              "enum": [
+                "finalized"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "state",
+            "nextOffset",
+            "expiresAt",
+            "receipt"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expiresAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "nextOffset": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "state": {
+              "enum": [
+                "cancelled",
+                "failed"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "state",
+            "nextOffset",
+            "expiresAt"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "transfer_too_large",
+                "transfer_incomplete",
+                "checksum_mismatch",
+                "unsupported_media",
+                "staged_source_not_found",
+                "staged_source_expired",
+                "staged_source_consumed",
+                "staging_capacity_reached",
+                "staging_write_failed",
+                "staged_source_wrong_session",
+                "staged_source_wrong_activation",
+                "staged_source_busy",
+                "invalid_argument",
+                "invalid_media",
+                "image_dimensions_exceeded",
+                "staged_source_integrity_failure",
+                "transfer_timed_out",
+                "staging_authority_unavailable"
+              ],
+              "type": "string"
+            },
+            "ok": {
+              "enum": [
+                false
+              ],
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "ok",
+            "code"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "object"
+    }
+  },
+  "formatVersion": 1
+}

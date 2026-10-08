@@ -1,0 +1,512 @@
+{
+  "policy": "agent-adaptive-screenshots-v1",
+  "owner": "Agent Shipping / Adaptive Screenshots",
+  "interpretation": "First matching rule within the named decision. Facts are grounded observations, not caller authority or an NLP/folder/source parser. Actions are reasoning handoffs described in agent-adaptive-screenshots.md; no tool execution. Missing facts fail closed.",
+  "reference": "agent-adaptive-screenshots.md",
+  "decisions": {
+    "activation": {
+      "rules": [
+        {
+          "when": {
+            "intent": [
+              "generic_creation",
+              "explicit_spec",
+              "add_spec",
+              "orientation_variant",
+              "platform_scope"
+            ]
+          },
+          "action": "resolve_scope"
+        },
+        {
+          "when": {
+            "intent": "ordinary_edit"
+          },
+          "action": "normal_edit"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "target": {
+      "rules": [
+        {
+          "when": {
+            "explicitScope": true
+          },
+          "action": "skip_target"
+        },
+        {
+          "when": {
+            "currentVerifiedRelevantContext": true
+          },
+          "action": "consume_verified"
+        },
+        {
+          "when": {
+            "dependsOnASC": true
+          },
+          "action": "existing_target_policy"
+        },
+        {
+          "when": {
+            "dependsOnASC": false
+          },
+          "action": "skip_target"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "scope": {
+      "rules": [
+        {
+          "when": {
+            "explicitScope": true,
+            "requestedRecordsValid": false
+          },
+          "action": "explain_unsupported_or_clarify"
+        },
+        {
+          "when": {
+            "explicitScope": true,
+            "requestedRecordsValid": true
+          },
+          "action": "use_observed_requests",
+          "selectors": [
+            "requestedRecords"
+          ]
+        },
+        {
+          "when": {
+            "explicitScope": false,
+            "verifiedIOS": true,
+            "verifiedMacOS": true
+          },
+          "action": "native_defaults",
+          "selectors": [
+            "defaults.devices.iPhone",
+            "defaults.devices.mac"
+          ]
+        },
+        {
+          "when": {
+            "explicitScope": false,
+            "verifiedIOS": true
+          },
+          "action": "native_defaults",
+          "selectors": [
+            "defaults.devices.iPhone"
+          ]
+        },
+        {
+          "when": {
+            "explicitScope": false,
+            "verifiedMacOS": true
+          },
+          "action": "native_defaults",
+          "selectors": [
+            "defaults.devices.mac"
+          ]
+        },
+        {
+          "when": {
+            "explicitScope": false
+          },
+          "action": "native_defaults",
+          "selectors": [
+            "defaults.global"
+          ]
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "observation": {
+      "rules": [
+        {
+          "when": {
+            "sessionCertain": false
+          },
+          "action": "stop_dependent_work"
+        },
+        {
+          "when": {
+            "staleContinuation": true
+          },
+          "action": "restart_exact_observation"
+        },
+        {
+          "when": {
+            "complete": false
+          },
+          "action": "continue_snapshot_pages"
+        },
+        {
+          "when": {
+            "complete": true,
+            "sessionCertain": true,
+            "fresh": true,
+            "exists": true
+          },
+          "action": "preserve_destination"
+        },
+        {
+          "when": {
+            "complete": true,
+            "sessionCertain": true,
+            "fresh": true,
+            "exists": false
+          },
+          "action": "adapt_once"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "source": {
+      "rules": [
+        {
+          "when": {
+            "newDestination": false
+          },
+          "action": "preserve_existing_sources"
+        },
+        {
+          "when": {
+            "newDestination": true,
+            "hasCanvas": false
+          },
+          "action": "no_synthetic_canvas"
+        },
+        {
+          "when": {
+            "newDestination": true,
+            "hasCanvas": true,
+            "compatibleEvidence": true,
+            "freshAuthorizedRef": true
+          },
+          "action": "assign_scoped_source"
+        },
+        {
+          "when": {
+            "newDestination": true,
+            "hasCanvas": true,
+            "compatibleEvidence": false
+          },
+          "action": "retain_visible_empty_source_pending"
+        },
+        {
+          "when": {
+            "newDestination": true,
+            "hasCanvas": true,
+            "freshAuthorizedRef": false
+          },
+          "action": "rediscover_source_keep_destination"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "catalog": {
+      "rules": [
+        {
+          "when": {
+            "evidenceAmbiguous": true
+          },
+          "action": "preview_more_or_clarify"
+        },
+        {
+          "when": {
+            "evidenceAmbiguous": false,
+            "opaqueAuthority": true
+          },
+          "action": "use_semantic_evidence_with_opaque_refs"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "mockup": {
+      "rules": [
+        {
+          "when": {
+            "definitionNeeded": true,
+            "exactDestinationObserved": true
+          },
+          "action": "scoped_native_registry"
+        },
+        {
+          "when": {
+            "definitionNeeded": false
+          },
+          "action": "reuse_native_resolved"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "localization": {
+      "rules": [
+        {
+          "when": {
+            "translationRequested": true
+          },
+          "action": "separate_localization_skill"
+        },
+        {
+          "when": {
+            "refinementRefused": true
+          },
+          "action": "retain_adaptive_refinement_pending"
+        },
+        {
+          "when": {
+            "translationRequested": false,
+            "structuralOnly": true
+          },
+          "action": "adaptive_free"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "unknown": {
+      "rules": [
+        {
+          "when": {
+            "outcome": "mutation_outcome_unknown"
+          },
+          "action": "fresh_exact_inspection_no_replay"
+        },
+        {
+          "when": {
+            "reconciledSessionCertain": false
+          },
+          "action": "stop_dependent_work"
+        },
+        {
+          "when": {
+            "reconciledComplete": false
+          },
+          "action": "continue_snapshot_pages"
+        },
+        {
+          "when": {
+            "reconciledSessionCertain": true,
+            "reconciledComplete": true,
+            "exists": true
+          },
+          "action": "consume_current_no_historical_claim"
+        },
+        {
+          "when": {
+            "reconciledSessionCertain": true,
+            "reconciledComplete": true,
+            "exists": false,
+            "stillRequired": true,
+            "freshCompleteObservation": true
+          },
+          "action": "new_intentional_request"
+        },
+        {
+          "when": {
+            "reconciledSessionCertain": true,
+            "reconciledComplete": true,
+            "exists": false,
+            "stillRequired": false
+          },
+          "action": "no_mutation"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "creative": {
+      "rules": [
+        {
+          "when": {
+            "existingPreserved": true,
+            "editIntent": false
+          },
+          "action": "preview_preserved_no_redesign"
+        },
+        {
+          "when": {
+            "allCanvasPreviewsReviewed": false
+          },
+          "action": "preview_every_destination_canvas"
+        },
+        {
+          "when": {
+            "materialWeakness": true,
+            "withinExistingBudget": true
+          },
+          "action": "refine_same_target_then_preview"
+        },
+        {
+          "when": {
+            "materialWeakness": true,
+            "withinExistingBudget": false
+          },
+          "action": "report_creative_pending"
+        },
+        {
+          "when": {
+            "allCanvasPreviewsReviewed": true,
+            "materialWeakness": false
+          },
+          "action": "final_ordered_review_same_target"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "persistence": {
+      "rules": [
+        {
+          "when": {
+            "samePersistenceSession": false
+          },
+          "action": "saved_unproven"
+        },
+        {
+          "when": {
+            "savedGenerationCoversCommit": true,
+            "samePersistenceSession": true
+          },
+          "action": "relevant_commit_saved"
+        },
+        {
+          "when": {
+            "state": [
+              "failed",
+              "needsUserAction"
+            ]
+          },
+          "action": "report_save_failure_no_adaptive_replay"
+        },
+        {
+          "when": {
+            "state": [
+              "pending",
+              "saving",
+              "dirty"
+            ]
+          },
+          "action": "report_applied_save_pending"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "completion": {
+      "rules": [
+        {
+          "when": {
+            "scopeComplete": false
+          },
+          "action": "report_partial_destinations"
+        },
+        {
+          "when": {
+            "sourcePending": true
+          },
+          "action": "report_source_pending"
+        },
+        {
+          "when": {
+            "refinementPending": true
+          },
+          "action": "report_refinement_pending"
+        },
+        {
+          "when": {
+            "scopeComplete": true,
+            "sourcePending": false,
+            "refinementPending": false,
+            "finalReviewComplete": true,
+            "savedConfirmed": true
+          },
+          "action": "complete_and_saved"
+        },
+        {
+          "when": {
+            "savedConfirmed": false
+          },
+          "action": "report_applied_not_saved"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "multiSpec": {
+      "rules": [
+        {
+          "when": {
+            "laterDestinationFailed": true
+          },
+          "action": "retain_prior_report_failure"
+        },
+        {
+          "when": {
+            "allDestinationsResolved": true
+          },
+          "action": "sequential_one_destination_atomic"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    },
+    "sourceCompatibility": {
+      "rules": [
+        {
+          "when": {
+            "sameDeviceFamily": false
+          },
+          "action": "incompatible_source"
+        },
+        {
+          "when": {
+            "physicalSourceContextCompatible": false
+          },
+          "action": "incompatible_source"
+        },
+        {
+          "when": {
+            "sameDeviceFamily": true,
+            "physicalSourceContextCompatible": true,
+            "sourceEvidenceGrounded": true
+          },
+          "action": "compatible_source_candidate"
+        }
+      ],
+      "fallback": "preview_more_or_clarify"
+    },
+    "rotation": {
+      "rules": [
+        {
+          "when": {
+            "independentlyGroundedCreativeDecision": true
+          },
+          "action": "creative_transform_then_preview"
+        },
+        {
+          "when": {
+            "independentlyGroundedCreativeDecision": false
+          },
+          "action": "preserve_native_physical_orientation"
+        }
+      ],
+      "fallback": "stop_dependent_work"
+    }
+  },
+  "invariants": {
+    "nativeDefaults": "list_screenshot_specs only; never ordering or Plugin constants",
+    "targetRestrictsDesign": false,
+    "adaptiveRequiresPRO": false,
+    "automaticMutationReplay": false,
+    "sourceMatchingEngine": false,
+    "folderParser": false,
+    "mockupCompatibilityTable": false,
+    "syntheticCanvas": false,
+    "wholeWorkflowTransaction": false,
+    "creativeTarget": "same across destinations; coordinates may change",
+    "scope": "exact locale/specification for off-active operations",
+    "newProjectPrimary": "unchanged native default; no unrequested source format",
+    "sourceFallback": "visible empty native mockup; never fake, forced or rotated pixels",
+    "persistence": "same-session saved generation must cover relevant commit; no adaptation replay to save",
+    "canvasOrientationDeterminesSourceCompatibility": false,
+    "canvasOrientationDeterminesMockupRotation": false,
+    "capturePixelRotation": false,
+    "creativeMockupRotation": "allowed only from independently grounded composition/design judgment",
+    "sourceCompatibility": "grounded device family and physical mockup/source context; outer Canvas orientation is independent"
+  }
+}

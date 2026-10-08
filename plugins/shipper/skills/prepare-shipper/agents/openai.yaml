@@ -1,0 +1,3 @@
+interface:
+  display_name: "Prepare a Shipper Project"
+  short_description: "Open or create the project needed for your task."

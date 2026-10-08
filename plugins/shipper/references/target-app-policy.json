@@ -1,0 +1,249 @@
+{
+  "policy": "target-app-orchestration-v1",
+  "owner": "Agent Shipping / ASC Context Authority",
+  "interpretation": "First matching rule; unlisted facts do not grant authority. Fallback stops the Target-dependent step. Read target-app.md for action boundaries.",
+  "limits": {
+    "automaticRefreshRetries": 0,
+    "automaticBindRetries": 0,
+    "automaticSecurityRetries": 0,
+    "reconciliationReads": 1
+  },
+  "rules": [
+    {
+      "when": {"event": "localization_inspected", "resolution": "resolved"},
+      "action": "continue_localization"
+    },
+    {
+      "when": {"event": "localization_inspected", "resolution": "target_locale_ambiguous"},
+      "action": "ask_locale_variant"
+    },
+    {
+      "when": {
+        "event": "localization_inspected", "resolution": "target_locale_unavailable",
+        "localeAuthority": "project", "targetContextAllowed": true, "targetFlowAttempted": false
+      },
+      "action": "read"
+    },
+    {
+      "when": {"event": "localization_inspected", "resolution": "target_locale_unavailable"},
+      "action": "stop_locale_unavailable"
+    },
+    {
+      "when": {
+        "event": "start",
+        "needsASC": false
+      },
+      "action": "skip_target"
+    },
+    {
+      "when": {
+        "event": "start",
+        "needsASC": true,
+        "currentVerifiedObservation": true
+      },
+      "action": "continue_verified"
+    },
+    {
+      "when": {
+        "event": "start",
+        "needsASC": true
+      },
+      "action": "read"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "uncertain": true
+      },
+      "action": "reconcile_read"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "reconciliationRequired": true
+      },
+      "action": "reconcile_read"
+    },
+    {
+      "when": {
+        "event": "reconcile"
+      },
+      "action": "stop_after_reconcile"
+    },
+    {
+      "when": {
+        "event": "read",
+        "status": "NO_TARGET_CONFIGURED"
+      },
+      "action": "discover"
+    },
+    {
+      "when": {
+        "event": "read",
+        "status": "TARGET_ASSOCIATED_BUT_NOT_FRESHLY_VERIFIED",
+        "freshRequired": false
+      },
+      "action": "reuse_known"
+    },
+    {
+      "when": {
+        "event": "read",
+        "status": "TARGET_ASSOCIATED_BUT_NOT_FRESHLY_VERIFIED",
+        "freshRequired": true
+      },
+      "action": "refresh_associated"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "TARGET_CONTEXT_AVAILABLE",
+        "verification": "VERIFIED_TARGET_CONTEXT"
+      },
+      "action": "continue_verified"
+    },
+    {
+      "when": {
+        "event": "refresh",
+        "status": "CANDIDATE_OBSERVED_NOT_BOUND",
+        "completeObservedCandidate": true
+      },
+      "action": "bind_observed"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "APP_NOT_FOUND_IN_LOADED_APPS"
+      },
+      "action": "continue_local_not_found"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "APP_AMBIGUOUS"
+      },
+      "action": "ask_product_choice"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "PRODUCT_DECISION_REQUIRED"
+      },
+      "action": "ask_product_choice"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "NO_USABLE_VERSION"
+      },
+      "action": "continue_local_no_version"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "USER_SECURITY_ACTION_REQUIRED"
+      },
+      "action": "wait_native_security"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "CREDENTIALS_UNAVAILABLE"
+      },
+      "action": "report_credentials"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "ASC_UNAVAILABLE"
+      },
+      "action": "report_asc_unavailable"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "TARGET_NO_LONGER_AVAILABLE"
+      },
+      "action": "ask_target_disappeared"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "FAILED"
+      },
+      "action": "stop_target_step"
+    },
+    {
+      "when": {
+        "event": [
+          "refresh",
+          "bind"
+        ],
+        "status": "NO_TARGET_CONFIGURED"
+      },
+      "action": "ask_product_choice"
+    }
+  ],
+  "fallback": "stop_target_step",
+  "adjacentGaps": {
+    "agentScreenshotSpecs": "SEPARATE_CAPABILITY",
+    "primaryMetadata": "SEPARATE_CAPABILITY"
+  },
+  "consumerAuthority": {
+    "targetRequiresPRO": false,
+    "localization": "existing Phase 8 live capability and PRO authority",
+    "autonomy": "prepare-shipper ends at exact workable project/session"
+  },
+  "persistence": "none; request-local reasoning only",
+  "activationRules": [
+    {
+      "when": {
+        "dependency": [
+          "asc_app_identity",
+          "all_available_localizations",
+          "asc_localization_scope",
+          "asc_platform_or_version",
+          "asc_metadata_context",
+          "future_supported_shipping"
+        ]
+      },
+      "action": "target_required"
+    }
+  ],
+  "activationFallback": "target_skipped"
+}

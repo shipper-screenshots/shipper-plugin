@@ -1,0 +1,3 @@
+interface:
+  display_name: "Publish to App Store Connect"
+  short_description: "Publish existing screenshots and metadata with Shipper."
