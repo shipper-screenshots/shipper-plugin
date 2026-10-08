@@ -9,7 +9,7 @@ Before any progress message or tool call, adopt the language of the user's curre
 
 Read [Core Authority and Compatibility](../../references/core-authority.md) and follow the [Skill Policy](../../references/skill-policy.md). Use only Plugin-scoped Shipper tools; this workflow is strictly `READ_ONLY`.
 
-1. If Shipper MCP tools are unavailable, stop and tell the user, in their language, that Shipper MCP is not available.
+1. If Shipper MCP tools are unavailable, stop and tell the user, in their language, that Shipper is unavailable, then ask them to open Shipper and turn on the setting named exactly “Allow Codex to connect” in Settings (keep this setting name in English, as shown in the app).
 2. Call `get_connection_status` once.
 3. Call `inspect_project` once.
 4. Report only the observed Shipper/MCP connection state and active project state.
