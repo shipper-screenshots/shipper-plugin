@@ -10268,7 +10268,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "description": "Acquire and open one exact Core-issued lifecycle-03 candidateRef from list_projects. Candidate references select an existing source, never constitute authority; old authorizedProjectRef arguments are rejected. No path, URL, filename, bookmark or project UUID is accepted. Core revalidates access/resource/project and verifies the registered session; existing hosts are reused and other dirty projects preserved. OPENED binds this MCP helper to the returned project/session; inspect_project then reads that context, regardless of focus. Accepted downstream operations use the verified exact project/session independently of focus, while retaining their normal admission, ID and revision checks. USER_ACTION_REQUIRED does not automate permission. After an uncertain open, do not blindly replay: list_projects again, resolve and verify the intended host. No app launch, content mutation or Shipping is performed.",
+      "description": "Acquire and open one exact Core-issued lifecycle-04 candidateRef from list_projects. Candidate references select an existing source, never constitute authority; old authorizedProjectRef arguments are rejected. No path, URL, filename, bookmark or project UUID is accepted. Core revalidates access/resource/project and verifies the registered session; existing hosts are reused and other dirty projects preserved. OPENED binds this MCP helper to the returned project/session; inspect_project then reads that context, regardless of focus. Accepted downstream operations use the verified exact project/session independently of focus, while retaining their normal admission, ID and revision checks. USER_ACTION_REQUIRED does not automate permission. After an uncertain open, do not blindly replay: list_projects again, resolve and verify the intended host. No app launch, content mutation or Shipping is performed.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -10449,7 +10449,201 @@
                   "CREATION_RECEIPT_UNAVAILABLE",
                   "CREATION_RECEIPT_CAPACITY",
                   "CREATION_UNRESOLVED",
-                  "CREATION_FAILED"
+                  "CREATION_FAILED",
+                  "TEMPLATE_NOT_FOUND",
+                  "TEMPLATE_AMBIGUOUS"
+                ],
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "REFUSED",
+                  "UNRESOLVED"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "reason",
+              "status"
+            ],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "Discover bundled native project templates before project creation. Use templateID only from this result and create only an EXACT_UNIQUE entry. Query filters by template identity and descriptive metadata; it grants no project, file or mutation authority. Do not guess a template or reuse a stale discovery result; discover again before a later creation attempt. No paths or resource locations are exposed.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "name": "list_project_templates",
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "templates": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "canvasCount": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "platform": {
+                  "type": "string"
+                },
+                "resolution": {
+                  "enum": [
+                    "EXACT_UNIQUE",
+                    "AMBIGUOUS"
+                  ],
+                  "type": "string"
+                },
+                "screenshotSpecification": {
+                  "type": "string"
+                },
+                "templateID": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "canvasCount",
+                "category",
+                "name",
+                "platform",
+                "resolution",
+                "screenshotSpecification",
+                "templateID"
+              ],
+              "type": "object"
+            },
+            "maxItems": 100,
+            "type": "array"
+          }
+        },
+        "required": [
+          "templates"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "Use after list_project_templates to create one durable native Shipper project from one exact bundled template. Preserve the selected template's native sourceTemplate identity, Canvas set, resources, specification and metadata instead of rebuilding it Canvas by Canvas. Generate a lowercase UUID creationAttemptID before dispatch. The same uncertain attempt must reuse the same ID, canonical project name and templateID; changing any of them refuses. Do not create a blank project as a template workaround or replay an uncertain attempt with different identity. OPENED binds the exact created project/session.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "creationAttemptID": {
+            "maxLength": 36,
+            "minLength": 36,
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "templateID": {
+            "maxLength": 240,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,239}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "creationAttemptID",
+          "name",
+          "templateID"
+        ],
+        "type": "object"
+      },
+      "name": "create_project_from_template",
+      "outputSchema": {
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "committedGeneration": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "projectID": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "projectRevision": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "projectSessionID": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "OPENED"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "committedGeneration",
+              "projectID",
+              "projectRevision",
+              "projectSessionID",
+              "status"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "enum": [
+                  "INVALID_PROJECT_NAME",
+                  "INVALID_CREATION_ATTEMPT",
+                  "CREATION_ATTEMPT_EXPIRED",
+                  "CREATION_INTENT_MISMATCH",
+                  "PROJECT_NAME_CONFLICT",
+                  "PROJECTS_DESTINATION_UNAVAILABLE",
+                  "CREATION_RECEIPT_UNAVAILABLE",
+                  "CREATION_RECEIPT_CAPACITY",
+                  "CREATION_UNRESOLVED",
+                  "CREATION_FAILED",
+                  "TEMPLATE_NOT_FOUND",
+                  "TEMPLATE_AMBIGUOUS"
                 ],
                 "type": "string"
               },
@@ -10471,7 +10665,7 @@
       }
     }
   ],
-  "serverVersion": "6.3.0",
+  "serverVersion": "6.4.0",
   "shipping": [
     {
       "annotations": {
@@ -13385,5 +13579,5 @@
       }
     }
   ],
-  "toolCount": 35
+  "toolCount": 37
 }

@@ -152,7 +152,7 @@
     "Invoke the advertised executable exactly; never search PATH or invent a helper location. Compare this reference serverVersion with live status before use; stop on a mismatch.",
     "The signed helper must be allowed to initialize its existing App Sandbox. If an enclosing execution sandbox blocks startup, use the host's explicit execution-approval mechanism; never change entitlements, add exceptions or silently bypass approval. Abnormal termination/empty stdout is not success."
   ],
-  "serverVersion": "6.3.0",
+  "serverVersion": "6.4.0",
   "stdin": "Raw authorized PNG bytes, exactly those used for byte count and SHA-256. No JSON, framing or base64. Close STDIN at EOF; stream the entire artifact.",
   "success": {
     "encoding": "One JSON object followed by a newline; dates use ISO-8601 UTC.",

@@ -17,11 +17,13 @@ Treat current Shipper Core/MCP schemas, capabilities, IDs, runtime references, s
 
 Obtain the intended existing exact project/session through [Shipper Autonomy preparation](../prepare-shipper/SKILL.md), then continue in the same task. This includes Metadata-only work. Canonical source creation, completion, rewrite or improvement belongs to [Author App Store Metadata](../author-app-store-metadata/SKILL.md), which returns here only for requested secondaries. Never infer new-project intent from a missing project. Preparation performs no translation and does not bypass PRO.
 
-## Conditional ASC context prerequisite
+## Required Target App authority
 
-Use [Target App context](../../references/target-app.md) only for ASC-dependent scope such as “all available localizations”; explicit local scope skips it. Reuse verified context from the same flow or follow the existing-Target-first policy on the same project. Target neither grants PRO nor translates, changes the source locale, fills primary Metadata, or implements Screenshot Specs. If ASC scope fails, stop only that portion and preserve independent work.
+After the PRO check succeeds, establish [Target App context](../../references/target-app.md) for every Plugin localization request, including an explicit list such as French, German or Arabic. Target App itself remains available to Free and PRO accounts; the PRO gate applies to Localization, Metadata and Publishing, not to Target discovery or binding.
 
-If inspection returns `target_locale_unavailable` with `localeAuthority: project`, follow Target App's bounded Localization handoff, then re-inspect the requested languages. Do not ask the user to connect/sign in, configure languages or refresh Target manually. Respect local-only intent. `target_locale_ambiguous` asks only for the regional/script choice.
+Read the current Target on the exact project first. Refresh it when it is absent, not freshly verified, or does not match an explicitly named app such as “my app Inbox”; discover and bind the exact requested app without deriving identity from the Shipper project title. Reuse a verified matching Target from the same uninterrupted flow. Target neither grants PRO nor translates, changes the source locale, fills primary Metadata, or implements Screenshot Specs.
+
+Before generating the first translation, inspect **every requested locale intent** against that freshly verified Target. Continue only when every locale resolves from `localeAuthority: selected_target` with `available: true`. If one is unavailable, ambiguous or Target cannot be verified, stop before translation and mutation; do not fall back to project locales, invent a generic locale, or ask the user to perform a refresh that the Target tools can do. `target_locale_ambiguous` asks only for the regional/script choice.
 
 ## 1. PRO before translation
 
@@ -40,9 +42,9 @@ For Free or UNKNOWN, do not call `apply_localization`, use `edit_canvas` as a wo
 
 Verify the intended project and compatibility under shared authority. Establish the exact requested Canvases/specs and Metadata fields, resolving names/order to observed IDs.
 
-`list_locales` gives existing project identities; it is not an exhaustive supported-language catalog. Use `inspect_localization` without a target or with `targetIntent` to obtain `availableLocales`, `localeAuthority` and resolution. Only `available: true` authorizes a target; `existsInProject` distinguishes availability from existing content.
+`list_locales` gives existing project identities; it is not an exhaustive supported-language catalog. Use `inspect_localization` without a target or with `targetIntent` to obtain `availableLocales`, `localeAuthority` and resolution. Require `localeAuthority: selected_target`; only `available: true` authorizes a target, while `existsInProject` distinguishes availability from existing content. Project-only authority is diagnostic and cannot authorize Plugin localization.
 
-Use an exact available identifier, or the sole compatible language/script match. `target_locale_ambiguous` requires a choice; `target_locale_unavailable` triggers the bounded Target reassessment above, then stops that locale if unresolved. Arabic may resolve to the sole `ar-SA`; Portuguese with `pt-BR` and `pt-PT` is ambiguous. Preserve Chinese script distinctions. Never invent generic `ar`, `de`, `fr` or `pt`, substitute a regional sibling, or derive identity from display/folder names. A user writing in French requests no locale by itself.
+Use an exact available identifier, or the sole compatible language/script match. `target_locale_ambiguous` requires a choice; `target_locale_unavailable` stops the batch before translation after the bounded Target verification above. Arabic may resolve to the sole `ar-SA`; Portuguese with `pt-BR` and `pt-PT` is ambiguous. Preserve Chinese script distinctions. Never invent generic `ar`, `de`, `fr` or `pt`, substitute a regional sibling, or derive identity from display/folder names. A user writing in French requests no locale by itself.
 
 Inspect each exact `targetLocale` before translating. Require resolved status and read every requested page on the same snapshot. Consume current source/target locale, authority, correspondence, protection, six Metadata fields and limits, Text, source relationships and persistence. Current Shipper state wins; never infer from incomplete or stale pages.
 
@@ -106,7 +108,7 @@ UPDATE uses durable target addresses and must Omit untouched content. Never send
 
 One `apply_localization` call atomically commits one locale. Retain the caller's transactionID before dispatch. Never split an indivisible locale or replay an uncertain outcome.
 
-For multiple locales, inspect → translate → apply → review → persistence sequentially with fresh revisions. Keep successful locales and never roll them back automatically. Report applied, not applied or unknown per locale; stop dependent work while authority/outcome is unresolved.
+For multiple locales, first resolve the complete requested locale set through the same verified Target, before translating any locale. Then inspect → translate → apply → review → persistence sequentially with fresh revisions. Keep successful locales and never roll them back automatically. Report applied, not applied or unknown per locale; stop dependent work while authority/outcome is unresolved.
 
 ## 7. Preview and adapt the existing design
 

@@ -1,6 +1,6 @@
 # Lifecycle observations and actions
 
-RESET-E internal orchestration consumes accepted RESET-B/C/D.1/E.1. Current source baseline: MCP 6.3.0, mcp-project-lifecycle-03, bridge v7, 35 tools, with the `mcp-shipping-01` Shipping surface available. Readiness depends on compatible semantics and required tool presence, never total inventory equality. This Plugin policy does not add a Core API, permission, daemon or journal.
+RESET-E internal orchestration consumes accepted RESET-B/C/D.1/E.1. Current source baseline: MCP 6.4.0, mcp-project-lifecycle-04, bridge v7, 37 tools, with native template discovery/creation and the `mcp-shipping-01` Shipping surface available. Readiness depends on compatible semantics and required tool presence, never total inventory equality. This Plugin policy does not add a permission, daemon or journal.
 
 ## Invocation and correlation
 
@@ -42,6 +42,8 @@ RESET-B already renews/reconciles known usable authority. A non-available candid
 
 `create_project`: dispatch the returned name and creationAttemptID exactly. No separate chooser or Create consent: RESET-C ON and existing Projects-folder scope govern admission. OPENED → opened. project_creation_outcome_unknown, lost/malformed response or CREATION_UNRESOLVED → unknown. Fresh readiness precedes the next bounded call with the **same** attempt. Do not discover/adopt by name as a substitute for the durable receipt. Maximum three creation dispatches; shared recovery budget still applies. If unresolved, stop with uncertainty and retain the attempt; never recommend a new attempt as retry.
 
+For explicit creation from any bundled template, use the `new_from_template` intent. The policy first emits `list_project_templates` with the user's template intent and accepts exactly one `EXACT_UNIQUE` result. It then emits `create_project_from_template` with that returned templateID, the intended project name and the already-generated creationAttemptID. Never substitute `create_project`, rebuild the template Canvas individually, or delete a blank initial Canvas. Unknown or ambiguous templates require a product-level choice before any project effect. An uncertain dispatch repeats discovery and may reconcile only the same attempt, name and template identity.
+
 PROJECTS_DESTINATION_UNAVAILABLE → access_missing (genuine canonical destination requirement). Other refusals, including PROJECT_NAME_CONFLICT, CREATION_INTENT_MISMATCH, expired/retired/missing receipt authority or capacity, → refused. A distinct explicit new intent gets a distinct attempt and an existing-name conflict remains a conflict, not adoption. Actual Core name normalization is authoritative. No fallback creation through files/native UI/Canvas tools.
 
 ## Exact workability and continuation
@@ -65,7 +67,7 @@ No automatic permission chooser/presentation state machine remains. If the user 
 External-source/Simulator scope and ASC confirmation remain separately governed. Never trigger Save/Refresh Access to manufacture a permission panel, approve a grant, change valid authority, or mutate project contents during preparation. No installed acceptance is implied by synthetic traces; deployment and real-world proof remain RESET-G.
 
 
-## Lifecycle-03 candidate boundary
+## Lifecycle-04 candidate boundary
 
 For named existing intent, first inspect the active project as described above. Only when acquisition is needed emit `list_projects({name: exactIntentName})`. Core owns exact comparison and global ambiguity before bounded pagination. Returned candidates are known metadata only, never AVAILABLE. Do not infer acquisition authority from name, path, UUID, open observation or candidateRef. Emit `open_project({candidateRef})` only for one EXACT_UNIQUE candidate; Core acquires that exact source, then returns the verified OPENED project/session. Access failures are learned during acquisition and retain the native user-action boundary. No fuzzy choice, first-row selection or focus fallback.
 

@@ -12,7 +12,7 @@ Continue the user's requested workflow in the same task. Do not ask them to invo
 ## Resolve the intended context
 
 - **Existing project:** reuse a freshly verified matching active project or acquire the exact requested project. A missing project does not authorize creating one.
-- **New project:** create only for explicit new-project intent or an unambiguous new-app brief that requires it. Generate one creation attempt identifier before dispatch and retain it through uncertain recovery; never replace an uncertain attempt with a new one.
+- **New project:** create only for explicit new-project intent or an unambiguous new-app brief that requires it. Generate one creation attempt identifier before dispatch and retain it through uncertain recovery; never replace an uncertain attempt with a new one. When the user requests any bundled template, discover it first and create the project natively from its exact unique template identity. Preserve the template association, Canvas set, resources, specification and metadata; never imitate a template by creating a blank project and rebuilding or deleting Canvas.
 - **Environment only:** verify connection or launch state without acquiring a project. This cannot satisfy a project workflow.
 
 Use fresh canonical evidence for an unnamed current project. Never substitute the frontmost project for an explicitly named target. Ask one product-level question only when the intended project or creation intent is genuinely ambiguous.

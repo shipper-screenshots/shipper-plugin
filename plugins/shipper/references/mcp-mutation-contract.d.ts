@@ -1,5 +1,5 @@
 // GENERATED from canonical MCP tools/list inputSchemas. Do not edit manually.
-// MCP server: 6.3.0; tool count: 35.
+// MCP server: 6.4.0; tool count: 37.
 // Companion mcp-mutation-contract.json preserves every JSON Schema constraint.
 // This declaration exposes types, enums and required fields; numeric, array-size,
 // exclusivity and runtime authority checks still belong to the canonical MCP validator.
@@ -1139,8 +1139,38 @@ export type CreateProjectArguments = {
 };
 
 export type CreateProjectResultVariant1 = {
-  "reason": "INVALID_PROJECT_NAME" | "INVALID_CREATION_ATTEMPT" | "CREATION_ATTEMPT_EXPIRED" | "CREATION_INTENT_MISMATCH" | "PROJECT_NAME_CONFLICT" | "PROJECTS_DESTINATION_UNAVAILABLE" | "CREATION_RECEIPT_UNAVAILABLE" | "CREATION_RECEIPT_CAPACITY" | "CREATION_UNRESOLVED" | "CREATION_FAILED";
+  "reason": "INVALID_PROJECT_NAME" | "INVALID_CREATION_ATTEMPT" | "CREATION_ATTEMPT_EXPIRED" | "CREATION_INTENT_MISMATCH" | "PROJECT_NAME_CONFLICT" | "PROJECTS_DESTINATION_UNAVAILABLE" | "CREATION_RECEIPT_UNAVAILABLE" | "CREATION_RECEIPT_CAPACITY" | "CREATION_UNRESOLVED" | "CREATION_FAILED" | "TEMPLATE_NOT_FOUND" | "TEMPLATE_AMBIGUOUS";
   "status": "REFUSED" | "UNRESOLVED";
+};
+
+export type ListProjectTemplatesArguments = {
+  // JSON Schema: {"maxLength": 120, "minLength": 1}
+  "query"?: string;
+};
+
+export type ListProjectTemplatesResult = {
+  // JSON Schema: {"maxItems": 100}
+  "templates": Array<ListProjectTemplatesResultTemplatesItem>;
+};
+
+export type ListProjectTemplatesResultTemplatesItem = {
+  // JSON Schema: {"minimum": 1}
+  "canvasCount": number;
+  "category": string;
+  "name": string;
+  "platform": string;
+  "resolution": "EXACT_UNIQUE" | "AMBIGUOUS";
+  "screenshotSpecification": string;
+  "templateID": string;
+};
+
+export type CreateProjectFromTemplateArguments = {
+  // JSON Schema: {"maxLength": 36, "minLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"}
+  "creationAttemptID": string;
+  // JSON Schema: {"maxLength": 120, "minLength": 1}
+  "name": string;
+  // JSON Schema: {"maxLength": 240, "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,239}$"}
+  "templateID": string;
 };
 
 export type ReadTargetContextArguments = {
@@ -1653,6 +1683,8 @@ export type ObserveShippingArguments = {
 export type OpenProjectResult = OpenProjectResultVariant0 | OpenProjectResultVariant1;
 
 export type CreateProjectResult = OpenProjectResultVariant0 | CreateProjectResultVariant1;
+
+export type CreateProjectFromTemplateResult = OpenProjectResultVariant0 | CreateProjectResultVariant1;
 
 export type RefreshTargetContextResult = ReadTargetContextResult;
 

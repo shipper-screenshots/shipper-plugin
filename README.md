@@ -38,7 +38,7 @@ To confirm the installation:
 codex plugin list --json
 ```
 
-The list should contain `shipper@shipper`, version `1.0.0`, with the Plugin enabled.
+The list should contain `shipper@shipper`, version `1.0.1`, with the Plugin enabled.
 
 ## Update
 

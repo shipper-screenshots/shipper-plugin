@@ -13,7 +13,7 @@ Technical bounded PNG transfer in the already-connected helper; no image bytes t
 | Field | Value |
 |---|---|
 | `bridgeVersion` | `v7` |
-| `contractVersion` | `mcp-project-lifecycle-03` |
+| `contractVersion` | `mcp-project-lifecycle-04` |
 | `encoding` | `canonical-base64` |
 | `maxActiveArtifacts` | `64` |
 | `maxActiveArtifactsPerSession` | `8` |
@@ -32,7 +32,7 @@ Technical bounded PNG transfer in the already-connected helper; no image bytes t
 | `maxTotalStagedBytes` | `268435456` |
 | `maxWidth` | `8192` |
 | `partialRequestTimeoutSeconds` | `30` |
-| `serverVersion` | `6.3.0` |
+| `serverVersion` | `6.4.0` |
 | `tool` | `transfer_inbound_artifact` |
 | `ttlSeconds` | `300` |
 

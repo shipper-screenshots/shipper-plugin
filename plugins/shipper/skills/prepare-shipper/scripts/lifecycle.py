@@ -16,7 +16,7 @@ BASE_TOOLS = {"get_connection_status", "get_automation_capabilities", "inspect_p
 PHASES = {"PREPARING", "READY", "USER_DECISION_REQUIRED", "FAILED", "CANCELLED"}
 KEYS = {"phase", "pending", "serial", "intent", "requiredTools", "time", "launchUsed",
         "probes", "waitSince", "readRetries", "openCount", "createCount", "decisionUsed",
-        "bound", "candidate"}
+        "bound", "candidate", "template"}
 
 
 def valid_uuid(value):
@@ -35,15 +35,19 @@ def compatible(status, capabilities, tools, intent, required):
         needed |= {"list_projects", "open_project", "list_locales"}
     if intent == "new":
         needed.add("create_project")
+    if intent == "new_from_template":
+        needed |= {"list_project_templates", "create_project_from_template"}
     lifecycle = capabilities.get("projectLifecycle", {})
     return bool(match and int(match[1]) == 6
                 and status.get("bridgeVersion") == "v7"
                 and status.get("serverStatus") == "Ready" and status.get("codexStatus") == "Connected"
-                and capabilities.get("contract") == "mcp-project-lifecycle-03"
+                and capabilities.get("contract") == "mcp-project-lifecycle-04"
                 and needed <= set(tools)
                 and (intent == "environment" or (lifecycle.get("discovery") is True
                      and lifecycle.get("authorizedOpen") is True))
-                and (intent != "new" or lifecycle.get("creation") is True))
+                and (intent not in {"new", "new_from_template"} or lifecycle.get("creation") is True)
+                and (intent != "new_from_template" or (lifecycle.get("templateDiscovery") is True
+                     and lifecycle.get("templateCreation") is True)))
 
 
 def emit(s, action, reason=None, preserve=False):
@@ -66,6 +70,12 @@ def emit(s, action, reason=None, preserve=False):
     if action == "create_project":
         out["arguments"] = {"name": s["intent"]["name"],
                             "creationAttemptID": s["intent"]["creationAttemptID"]}
+    if action == "list_project_templates":
+        out["arguments"] = {"query": s["intent"]["templateIntent"]}
+    if action == "create_project_from_template":
+        out["arguments"] = {"name": s["intent"]["name"],
+                            "creationAttemptID": s["intent"]["creationAttemptID"],
+                            "templateID": s["template"]}
     if action == "probe_context":
         out["tool"] = "list_locales"
         out["arguments"] = {k: s["bound"][k] for k in ("projectID", "projectSessionID")}
@@ -106,6 +116,8 @@ def project_action(s):
             return stop(s, "creation_unresolved_do_not_start_new_attempt")
         s["createCount"] += 1
         return emit(s, "create_project")
+    if s["intent"]["kind"] == "new_from_template":
+        return emit(s, "list_project_templates")
     # Existing-project preparation observes the current native context first.
     # Discovery/open is acquisition for absent or different projects, never a
     # verification ritual for an already-correct active project.
@@ -144,20 +156,24 @@ def transition(previous, event, now, data=None):
         intent = data.get("intent", {})
         kind = intent.get("kind")
         expected = {"kind"} if kind == "environment" else {"kind", "name"}
-        if kind == "new":
+        if kind in {"new", "new_from_template"}:
             expected.add("creationAttemptID")
-        if kind not in {"environment", "existing", "new"} or set(intent) != expected:
+        if kind == "new_from_template":
+            expected.add("templateIntent")
+        if kind not in {"environment", "existing", "new", "new_from_template"} or set(intent) != expected:
             raise ValueError("invalid_intent")
         if kind != "environment" and (not isinstance(intent["name"], str) or not intent["name"].strip()):
             raise ValueError("name_required")
-        if kind == "new" and (not valid_uuid(intent["creationAttemptID"]) or intent["creationAttemptID"] != intent["creationAttemptID"].lower()):
+        if kind in {"new", "new_from_template"} and (not valid_uuid(intent["creationAttemptID"]) or intent["creationAttemptID"] != intent["creationAttemptID"].lower()):
             raise ValueError("attempt_required_before_dispatch")
+        if kind == "new_from_template" and (not isinstance(intent["templateIntent"], str) or not intent["templateIntent"].strip()):
+            raise ValueError("template_required")
         required = data.get("requiredTools", [])
         if not isinstance(required, list) or not all(isinstance(t, str) for t in required):
             raise ValueError("invalid_tools")
         s = dict(phase="PREPARING", pending="", serial=0, intent=copy.deepcopy(intent), requiredTools=required,
                  time=now, launchUsed=False, probes=0, waitSince=None, readRetries=0,
-                 openCount=0, createCount=0, decisionUsed=False, bound=None, candidate=None)
+                 openCount=0, createCount=0, decisionUsed=False, bound=None, candidate=None, template=None)
         return emit(s, "check_connection")
     if not isinstance(previous, dict) or set(previous) != KEYS:
         raise ValueError("invalid_state")
@@ -239,16 +255,32 @@ def transition(previous, event, now, data=None):
         s["candidate"] = ref
         s["openCount"] += 1
         return emit(s, "open_project")
-    if pending in {"open_project", "create_project"}:
+    if pending == "list_project_templates" and event == "templates":
+        matches = [t for t in data.get("templates", []) if isinstance(t, dict)]
+        if not matches:
+            return decision(s, "identify_intended_template")
+        if len(matches) != 1 or matches[0].get("resolution") != "EXACT_UNIQUE":
+            return decision(s, "ambiguous_template")
+        template_id = matches[0].get("templateID", "")
+        if not isinstance(template_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,239}", template_id):
+            return stop(s, "invalid_template_reference")
+        if s["template"] is not None and s["template"] != template_id:
+            return stop(s, "template_identity_changed")
+        if s["createCount"] >= 3:
+            return stop(s, "creation_unresolved_do_not_start_new_attempt")
+        s["template"] = template_id
+        s["createCount"] += 1
+        return emit(s, "create_project_from_template")
+    if pending in {"open_project", "create_project", "create_project_from_template"}:
         if event == "opened":
             if data.get("result", {}).get("status") != "OPENED":
                 return stop(s, "unverified_open")
             s["bound"] = context(data["result"])
             return emit(s, "inspect_project")
         if event == "access_missing":
-            return decision(s, "configure_projects_folder" if pending == "create_project" else "restore_project_access")
+            return decision(s, "configure_projects_folder" if pending in {"create_project", "create_project_from_template"} else "restore_project_access")
         if event == "unknown" or (pending == "open_project" and event == "ref_expired"):
-            if pending == "create_project":
+            if pending in {"create_project", "create_project_from_template"}:
                 # D.1 is the only allowed replay: same attempt, fresh readiness first.
                 return retry_read(s, "check_connection", "reconcile_same_creation_attempt")
             return retry_read(s, "list_projects", "reconcile_exact_open")
@@ -282,7 +314,7 @@ def transition(previous, event, now, data=None):
             return stop(s, "context_not_workable")
         s["phase"] = "READY"
         return emit(s, "continue_workflow")
-    if pending in {"list_projects", "inspect_project", "probe_context"} and event == "unavailable":
+    if pending in {"list_projects", "list_project_templates", "inspect_project", "probe_context"} and event == "unavailable":
         return retry_read(s, "check_connection", "read_recovery_exhausted")
     if event == "refused":
         return stop(s, data.get("reason", "core_refused"))

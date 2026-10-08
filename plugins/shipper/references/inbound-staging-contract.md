@@ -2,7 +2,7 @@
 
 > GENERATED from canonical staging parser, wire DTOs and lifecycle configuration. Do not edit manually.
 
-MCP server: `6.3.0`. Internal CLI protocol; no additional MCP tool.
+MCP server: `6.4.0`. Internal CLI protocol; no additional MCP tool.
 
 Machine-readable companion: [inbound-staging-contract.json](inbound-staging-contract.json).
 Mutation schemas: [mcp-mutation-contract.json](mcp-mutation-contract.json) and [types](mcp-mutation-contract.d.ts).

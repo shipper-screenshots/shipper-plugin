@@ -10,12 +10,19 @@
   },
   "rules": [
     {
-      "when": {"event": "localization_inspected", "resolution": "resolved"},
+      "when": {"event": "localization_inspected", "resolution": "resolved", "localeAuthority": "selected_target"},
       "action": "continue_localization"
     },
     {
-      "when": {"event": "localization_inspected", "resolution": "target_locale_ambiguous"},
+      "when": {"event": "localization_inspected", "resolution": "target_locale_ambiguous", "localeAuthority": "selected_target"},
       "action": "ask_locale_variant"
+    },
+    {
+      "when": {
+        "event": "localization_inspected", "localeAuthority": "project",
+        "targetContextAllowed": true, "targetFlowAttempted": false
+      },
+      "action": "read"
     },
     {
       "when": {
@@ -235,6 +242,7 @@
       "when": {
         "dependency": [
           "asc_app_identity",
+          "plugin_localization",
           "all_available_localizations",
           "asc_localization_scope",
           "asc_platform_or_version",
