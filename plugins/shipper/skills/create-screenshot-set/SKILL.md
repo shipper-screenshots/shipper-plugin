@@ -5,7 +5,11 @@ description: Create ordered editable Shipper screenshot sets, resolve unspecifie
 
 # Create Screenshot Set
 
+Before any progress message or tool call, adopt the language of the user's current substantive request and the shared Product-mode communication rule: one friendly, concise acknowledgement, then silence unless there is a material product milestone, a useful failure or necessary user action.
+
 Class: `MUTATION_CAPABLE`. Follow [Skill Policy](../../references/skill-policy.md), including Product-mode communication. Create a coherent ordered story from the user's product intent and observed identity; respect supplied direction and decide ordinary reversible design details autonomously when direction is delegated.
+
+When applying feedback to an existing Canvas or accepted set, change only the elements and relationships within the user's requested scope. Preserve every other accepted element exactly as it is: do not move, resize, restyle, replace, remove or regenerate it unless the requested change makes a dependent adjustment strictly necessary. Keep any such dependency minimal and disclose it before mutation when it would materially alter accepted work.
 
 Before planning a mutation, read [Core Authority and Compatibility](../../references/core-authority.md) and [Creation Decisions](references/creation-decisions.md). Live MCP schemas and results define executable capability.
 

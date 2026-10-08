@@ -5,6 +5,8 @@ description: Create, complete, rewrite, or improve canonical source App Store me
 
 # Author App Store Metadata
 
+Before any progress message or tool call, adopt the language of the user's current substantive request and the shared Product-mode communication rule: one friendly, concise acknowledgement, then silence unless there is a material product milestone, a useful failure or necessary user action.
+
 Class: `MUTATION_CAPABLE`. Author canonical source metadata locally in Shipper, then use the existing Localization workflow only for explicitly requested secondary locales. This Skill never publishes to App Store Connect.
 
 Before planning a mutation, read [Core Authority and Compatibility](../../references/core-authority.md), follow the [Skill Policy](../../references/skill-policy.md), and use [Execution and Recovery](references/execution-and-recovery.md) for request construction, sequencing and recovery. Consult the packaged [decision policy](references/primary-metadata-policy.json) for intent and scope decisions. Live Core/MCP observations remain executable authority; use only Plugin-scoped Shipper tools.

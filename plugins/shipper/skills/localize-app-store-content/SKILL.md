@@ -5,6 +5,8 @@ description: Localize or update Shipper project screenshots, secondary App Store
 
 # Localize App Store Content
 
+Before any progress message or tool call, adopt the language of the user's current substantive request and the shared Product-mode communication rule: one friendly, concise acknowledgement, then silence unless there is a material product milestone, a useful failure or necessary user action.
+
 Class: `MUTATION_CAPABLE`. Localize existing editable Shipper screenshots, secondary Metadata, or both without expanding scope or redesigning the source. This is local preparation, never publishing.
 
 Before planning a mutation, read [Core Authority and Compatibility](../../references/core-authority.md), follow the shared Product-mode communication rules in [Skill Policy](../../references/skill-policy.md), and use [Execution and Recovery](references/execution-and-recovery.md) for request construction, protection and recovery. Use only Plugin-scoped Shipper tools; live Core/MCP remains authoritative.

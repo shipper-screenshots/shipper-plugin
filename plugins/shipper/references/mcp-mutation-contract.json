@@ -10788,7 +10788,79 @@
                   "maxLength": 1024,
                   "type": "string"
                 },
+                "progress": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "committed": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "deleted": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "planned": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "processed": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reserved": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "uploaded": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "verified": {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "committed",
+                        "deleted",
+                        "planned",
+                        "processed",
+                        "reserved",
+                        "uploaded",
+                        "verified"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
                 "reason": {
+                  "anyOf": [
+                    {
+                      "maxLength": 1024,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "recoveryState": {
+                  "anyOf": [
+                    {
+                      "maxLength": 1024,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "rootCause": {
                   "anyOf": [
                     {
                       "maxLength": 1024,
@@ -10819,7 +10891,10 @@
                 "category",
                 "field",
                 "locale",
+                "progress",
                 "reason",
+                "recoveryState",
+                "rootCause",
                 "specification",
                 "state"
               ],
@@ -11126,7 +11201,79 @@
                   "maxLength": 1024,
                   "type": "string"
                 },
+                "progress": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "committed": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "deleted": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "planned": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "processed": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reserved": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "uploaded": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "verified": {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "committed",
+                        "deleted",
+                        "planned",
+                        "processed",
+                        "reserved",
+                        "uploaded",
+                        "verified"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
                 "reason": {
+                  "anyOf": [
+                    {
+                      "maxLength": 1024,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "recoveryState": {
+                  "anyOf": [
+                    {
+                      "maxLength": 1024,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "rootCause": {
                   "anyOf": [
                     {
                       "maxLength": 1024,
@@ -11157,7 +11304,10 @@
                 "category",
                 "field",
                 "locale",
+                "progress",
                 "reason",
+                "recoveryState",
+                "rootCause",
                 "specification",
                 "state"
               ],
@@ -11458,7 +11608,79 @@
                   "maxLength": 1024,
                   "type": "string"
                 },
+                "progress": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "committed": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "deleted": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "planned": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "processed": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "reserved": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "uploaded": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "verified": {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "committed",
+                        "deleted",
+                        "planned",
+                        "processed",
+                        "reserved",
+                        "uploaded",
+                        "verified"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
                 "reason": {
+                  "anyOf": [
+                    {
+                      "maxLength": 1024,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "recoveryState": {
+                  "anyOf": [
+                    {
+                      "maxLength": 1024,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "rootCause": {
                   "anyOf": [
                     {
                       "maxLength": 1024,
@@ -11489,7 +11711,10 @@
                 "category",
                 "field",
                 "locale",
+                "progress",
                 "reason",
+                "recoveryState",
+                "rootCause",
                 "specification",
                 "state"
               ],

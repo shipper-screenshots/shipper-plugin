@@ -1611,10 +1611,30 @@ export type PrepareShippingResultOutcomesItem = {
   "field": string | null;
   // JSON Schema: {"maxLength": 1024}
   "locale": string;
+  "progress": PrepareShippingResultOutcomesItemProgressVariant0 | null;
   "reason": string | null;
+  "recoveryState": string | null;
+  "rootCause": string | null;
   "specification": string | null;
   // JSON Schema: {"maxLength": 1024}
   "state": string;
+};
+
+export type PrepareShippingResultOutcomesItemProgressVariant0 = {
+  // JSON Schema: {"minimum": 0}
+  "committed": number;
+  // JSON Schema: {"minimum": 0}
+  "deleted": number;
+  // JSON Schema: {"minimum": 0}
+  "planned": number;
+  // JSON Schema: {"minimum": 0}
+  "processed": number;
+  // JSON Schema: {"minimum": 0}
+  "reserved": number;
+  // JSON Schema: {"minimum": 0}
+  "uploaded": number;
+  // JSON Schema: {"minimum": 0}
+  "verified": number;
 };
 
 export type PrepareShippingResultReviewVariant0 = {

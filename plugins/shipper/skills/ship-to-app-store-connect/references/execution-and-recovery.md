@@ -12,6 +12,8 @@ Preparation performs remote reads and private local preparation, not publication
 
 `observe_shipping`: use the known operationRef and exact context. Poll while executing or reconciling with paced checks and backoff; never rapid-spin. Scale the observation horizon to the admitted work, especially multi-locale screenshot batches. Unchanged execution is expected, is not user-facing progress, and must not be narrated repeatedly. Expiration of a local wait budget alone is neither terminal nor actionable: continue observing the same operation in the same task without replay or replacement. Finish only when Core returns a terminal result, or when a genuine boundary such as unavailable MCP access or required user action prevents further observation. At such a boundary, retain the reference and report only proven per-locale outcomes plus explicitly unconfirmed scope; never claim or imply probable completion, and never claim background monitoring that was not scheduled.
 
+For each requested locale/category outcome, use Core's `state`, `progress`, `rootCause` and `recoveryState` independently. `progress.verified` is the completed screenshot count; planned, reserved, uploaded or committed alone is not terminal proof. `rootCause` explains the original failure and must remain visible even when `recoveryState` says the old set is intact or a new preparation is required. Render exact locale results as Done, Failed, Not sent or Unconfirmed in the user's language. Never summarize a global dispatch as though all locale units completed, and never let the first active locale stand in for the rest of the batch.
+
 ## Boundaries and recovery
 
 | Observation | Next step |
