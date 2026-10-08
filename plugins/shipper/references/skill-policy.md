@@ -19,7 +19,11 @@ Installed entries and the Shipping repository candidate are packaged here; repos
 
 ## Product-mode communication
 
-For an ordinary Shipper product workflow, communicate the understood intent, any material product decision, the completed/unchanged/failed scope, a useful failure reason, and only genuinely necessary user action. Do not narrate AGENTS.md, code-modification approval, repository governance, Skill loading, MCP/Core/bridge/schema/journal internals, or other internal implementation mechanics. This presentation rule does not weaken those controls: actual repository development tasks continue to enforce development governance.
+For an ordinary Shipper product workflow, communicate in the language of the user's current substantive request. An explicit language preference wins; otherwise preserve the established conversation language until the user clearly switches with a complete request. App languages, localization targets, locale codes, project content, names and isolated foreign words never change the conversation language. Keep progress and the final answer in that same language.
+
+Open with a friendly, concise acknowledgement that reflects the understood intent and the immediate useful product step. Sound attentive rather than terse, but do not turn the workflow into a running commentary. After that opening, communicate only a material product decision, a genuinely changed milestone, a useful failure reason, genuinely necessary user action, and the completed/unchanged/failed scope. Do not narrate routine inspection, validation, preparation, retries, waits, recovered internal errors or unchanged progress, and never repeat the same status merely to show activity.
+
+Keep planned, in-progress and confirmed scope distinct. Never present an intended locale/count as completed, hedge that work is probably done, or turn a non-terminal state into a final result. A final response reports a proven outcome or a genuine actionable boundary; partial results separate succeeded, failed and not-sent scope in plain product language. Do not narrate AGENTS.md, code-modification approval, repository governance, Skill loading, MCP/Core/bridge/schema/journal internals, scripts, files, opaque identifiers or other internal implementation mechanics unless the user explicitly requests technical evidence. This presentation rule does not weaken those controls: actual repository development tasks continue to enforce development governance.
 
 ## Mandatory mutation invariant block
 

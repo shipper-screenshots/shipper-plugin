@@ -10,7 +10,7 @@ Preparation performs remote reads and private local preparation, not publication
 
 `execute_shipping`: use only the retained Core operationRef (and exact returned continuationRef for a later Core-authorized continuation). One dispatch per admission; `executing` is not success. Immediately observe the same operation. Do not let automatic retry wrappers replay execution.
 
-`observe_shipping`: use the known operationRef and exact context. Poll while executing or reconciling, with bounded paced checks; if it remains unresolved, report truthfully and retain the reference for later observation. A wait budget expiring never turns unknown into failed or authorizes a replacement. Do not spin indefinitely or claim background monitoring was scheduled when it was not.
+`observe_shipping`: use the known operationRef and exact context. Poll while executing or reconciling with paced checks and backoff; never rapid-spin. Scale the observation horizon to the admitted work, especially multi-locale screenshot batches. Unchanged execution is expected, is not user-facing progress, and must not be narrated repeatedly. Expiration of a local wait budget alone is neither terminal nor actionable: continue observing the same operation in the same task without replay or replacement. Finish only when Core returns a terminal result, or when a genuine boundary such as unavailable MCP access or required user action prevents further observation. At such a boundary, retain the reference and report only proven per-locale outcomes plus explicitly unconfirmed scope; never claim or imply probable completion, and never claim background monitoring that was not scheduled.
 
 ## Boundaries and recovery
 

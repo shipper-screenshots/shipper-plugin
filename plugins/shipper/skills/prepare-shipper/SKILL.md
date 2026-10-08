@@ -7,6 +7,8 @@ description: Internal Autonomy prerequisite for Shipper workflows. Obtain a veri
 
 This is an internal prerequisite for other Shipper workflows. Read [Skill policy](../../references/skill-policy.md) and [Lifecycle observations and actions](references/lifecycle.md), then run the packaged [decision policy](scripts/lifecycle.py) with task-local state and fresh observations. Follow its returned action exactly; live Shipper results remain authoritative. Do not install missing dependencies automatically.
 
+Retain reducer state in the task context, not as a user-visible deliverable or workspace edit. Never create lifecycle state in a repository, the task's `work/` or `outputs/` directory, or any other user project folder. If the command host cannot pass structured stdin directly, use a unique system-temporary file outside user workspaces and remove it immediately after that single invocation.
+
 Continue the user's requested workflow in the same task. Do not ask them to invoke this Skill, manually open a known accessible project, or treat successful preparation as the final result.
 
 ## Resolve the intended context
@@ -29,6 +31,6 @@ Never enable consent, grant scope, save or discard a project, force focus, resta
 
 ## Communicate in product terms
 
-State only the requested product scope and what remains unchanged, then continue without a technical play-by-play. Do not mention internal Skill or tool names, opaque references, scripts, files, identifiers, recovery mechanics, or whether source-code changes are planned. Report the product outcome and persistence state, or the minimum useful product action when blocked. Only provide technical detail when the user explicitly requests it.
+Follow the shared Product-mode communication policy. State only the requested product scope and what remains unchanged, then continue without a technical play-by-play. Do not mention internal Skill or tool names, opaque references, scripts, files, identifiers, recovery mechanics, or whether source-code changes are planned. Report the product outcome and persistence state, or the minimum useful product action when blocked. Only provide technical detail when the user explicitly requests it.
 
 Repository authority citation (documentation provenance; not a packaged runtime dependency): `docs/v1.1/Shipper Plugin/02-Architecture/Autonomy/Phase-11-Autonomy-Contract.md`.

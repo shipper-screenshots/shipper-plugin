@@ -6,6 +6,8 @@ RESET-E internal orchestration consumes accepted RESET-B/C/D.1/E.1. Current sour
 
 Run `python3 <this-skill>/scripts/lifecycle.py` with structured JSON stdin; never interpolate observations into shell commands. Use the packaged path, not a caller-supplied executable. One request returns one action. Retain the returned state unchanged in the task. Do not supply `time` or compute/store a Python monotonic origin. The CLI stamps every observation using a system-wide boot-relative clock: macOS `mach_continuous_time`, independent of each Python process and wall-clock changes. Timers include time between calls and system sleep. A regressing clock/state fails closed; never clamp or reset it to rescue an attempt.
 
+The reducer state is internal orchestration data, never a task artifact. Do not write it into the current repository, a generated Codex task directory, `work/`, `outputs/`, or any user-visible workspace. Prefer direct stdin. When the command host requires an intermediate file, create a unique file only in the system temporary directory, use it for one invocation, and delete it immediately even when the reducer refuses the input.
+
 Start example: `{"state":null,"event":"start","data":{"intent":{"kind":"existing","name":"Almost"},"requiredTools":["get_canvas_state","edit_canvas"]}}`.
 
 New intent adds `creationAttemptID` inside intent and uses kind `new`. Generate it once before the start/dispatch, for example with Python's `str(uuid.uuid4())`, and preserve the returned state before executing any effect. Environment-only intent is `{"kind":"environment"}`. It cannot be used as a shortcut for a content workflow. requiredTools comes from the caller's actual next accepted operations; inspect the live schemas, do not infer capability from this list.
