@@ -1,6 +1,6 @@
 # Shipper Plugin
 
-Your complete App Store screenshot workflow, inside Codex.
+Your complete App Store workflow, inside Codex.
 
 **Design. Localize. Ship. Right from Codex.**
 
@@ -9,12 +9,25 @@ Shipper Plugin connects Codex to the Shipper macOS app, giving it the tools and 
 - understand your app's features and benefits from your source screenshots;
 - plan a compelling App Store screenshot story;
 - design and edit Shipper canvases with text, assets, and device mockups;
-- adapt designs across Apple device screenshot specifications;
+- create and adapt screenshots for iPhone, iPad, Mac, and iPhone Duo;
 - write your App Store metadata;
 - localize your screenshots and metadata;
-- upload your screenshots and metadata to App Store Connect.
+- create and publish App Store Header and Search assets;
+- publish device screenshots, supported assets, and metadata to App Store Connect.
 
 Your projects remain editable in Shipper throughout the workflow.
+
+## What's new in Shipper Plugin 1.0.2
+
+Shipper Plugin 1.0.2 expands the App Store workflow available through Codex:
+
+- **Apple App Asset Library:** image publishing now uses Apple’s App Asset Library, introduced with App Store Connect API 4.5.1, replacing the deprecated screenshot-set API.
+- **iPhone Duo screenshots:** create, adapt, localize, and publish screenshots for Apple’s iPhone Duo format.
+- **Header and Search assets:** create and publish App Store Header and Search assets alongside your device screenshots.
+- **Better conversations with Codex:** clearer, product-focused progress messages, responses in the language of your request from the first message, and more useful guidance when Shipper is unavailable.
+- **More reliable publishing:** long-running Apple processing is followed until completion or a real failure, with safer results for each locale and recovery after interruptions.
+
+Shipper Plugin 1.0.2 requires [Shipper for macOS 1.2](https://apps.apple.com/app/apple-store/id6769785850) or later.
 
 ## Requirements
 
@@ -59,6 +72,27 @@ codex plugin list --json
 
 The list should contain `shipper@shipper`, version `1.0.2`, with the Plugin enabled.
 
+### Test your installation and connection
+
+After restarting Codex, open a new chat and ask:
+
+```text
+Verify that Shipper Plugin version 1.0.2 is installed and enabled, then check whether Shipper is connected.
+```
+
+Codex should confirm:
+
+- `shipper@shipper` version `1.0.2` is installed and enabled;
+- Shipper is connected;
+- the active Shipper project, when one is open.
+
+If Shipper is unavailable:
+
+1. Open Shipper.
+2. Go to **Shipper → Settings… (`⌘,`) → Shipper Plugin**.
+3. Turn on **Allow Codex to connect**.
+4. Return to Codex and repeat the request.
+
 ## Prepare your Screenshot Folder
 
 For stronger creative results, open:
@@ -73,14 +107,14 @@ You can change the folder or remove access at any time.
 
 ## Configure Ship to App Store Connect
 
-To let Codex upload screenshots or metadata to App Store Connect:
+To let Codex publish screenshots, Header and Search assets, or metadata to App Store Connect:
 
 1. Open **Shipper → Settings… (`⌘,`) → App Store Connect**.
 2. Configure and verify your App Store Connect connection.
 3. Open **Shipper → Settings… (`⌘,`) → Shipper Plugin**.
 4. Enable **Allow App Store Connect publishing**.
 
-Your Shipper project must also be associated with the correct Target App, with an app version in draft, before its content can be uploaded.
+Your Shipper project must also be associated with the correct Target App, with an app version in draft, before its content can be published.
 
 Enabling publishing does not upload anything by itself. Codex only prepares or executes an upload when you explicitly request it, and Shipper validates the operation before sending content to App Store Connect.
 
@@ -92,9 +126,9 @@ Shipper Plugin connects Codex to real, editable Shipper projects on your Mac.
 
 You do not need to open Shipper or a project before asking Codex to work. When required, Codex can launch Shipper and open the project needed for your request.
 
-Codex can create and edit screenshot sets, metadata, localizations, and device variants inside Shipper. The result is never a locked or disposable AI output.
+Codex can create and edit screenshot sets, Header and Search assets, metadata, localizations, and device variants inside Shipper. The result is never a locked or disposable AI output.
 
-They are your projects and your screenshots. You can open Shipper at any time to edit the text, move elements, replace assets, adjust device mockups, change the art direction, or continue the work yourself.
+They are your projects and your App Store assets. You can open Shipper at any time to edit the text, move elements, replace assets, adjust device mockups, change the art direction, or continue the work yourself.
 
 The Plugin runs locally. Its resolver connects Codex to the signed helper bundled inside Shipper. It does not:
 
@@ -143,6 +177,20 @@ Open my Shipper project [APP NAME] and review its current screenshot story.
 Improve the messaging without changing the existing visual direction.
 ```
 
+### Create iPhone Duo screenshots
+
+```text
+Create an editable iPhone Duo screenshot set for my Shipper project
+[PROJECT NAME], using its existing visual direction and messaging.
+```
+
+### Create Header and Search assets
+
+```text
+Create editable App Store Header and Search assets for my Shipper project
+[PROJECT NAME], consistent with its existing screenshot story and visual direction.
+```
+
 ### Localize screenshots and metadata in specific languages
 
 ```text
@@ -163,11 +211,18 @@ Localize the screenshots and App Store metadata in my Shipper project
 Write the metadata in my Shipper project [PROJECT NAME] in all languages available.
 ```
 
-### Ship to App Store Connect
+### Ship screenshots to App Store Connect
 
 ```text
-Upload the existing English and French screenshots from my Shipper project
-[PROJECT NAME] to App Store Connect. Do not upload metadata.
+Publish the existing English and French screenshots from my Shipper project
+[PROJECT NAME] to App Store Connect. Do not publish metadata.
+```
+
+### Ship screenshots, Header and Search assets
+
+```text
+Publish the screenshots, Header assets, and Search assets from my Shipper project
+[PROJECT NAME] to App Store Connect. Do not publish metadata.
 ```
 
 ### Ship everything to App Store Connect
