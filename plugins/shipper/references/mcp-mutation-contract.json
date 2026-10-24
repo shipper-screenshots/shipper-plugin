@@ -4,16 +4,27 @@
     "adapt_screenshot_spec": {
       "additionalProperties": false,
       "properties": {
+        "creationMode": {
+          "enum": [
+            "copyFirst",
+            "blank"
+          ],
+          "type": "string"
+        },
         "destinationSpecification": {
           "enum": [
             "iPhoneDynamicIslandMediumPortrait",
             "iPhoneDynamicIslandMediumLandscape",
+            "iPhoneDuoPortrait",
+            "iPhoneDuoLandscape",
             "iPhone65Portrait",
             "iPhone65Landscape",
             "iPhone69Portrait",
             "iPad13Portrait",
             "mac1280x800",
-            "mac2560x1600"
+            "mac2560x1600",
+            "appStoreHeader",
+            "appStoreSearch"
           ],
           "type": "string"
         },
@@ -5859,12 +5870,16 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             },
@@ -5939,12 +5954,16 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             }
@@ -6001,12 +6020,16 @@
                   "enum": [
                     "iPhoneDynamicIslandMediumPortrait",
                     "iPhoneDynamicIslandMediumLandscape",
+                    "iPhoneDuoPortrait",
+                    "iPhoneDuoLandscape",
                     "iPhone65Portrait",
                     "iPhone65Landscape",
                     "iPhone69Portrait",
                     "iPad13Portrait",
                     "mac1280x800",
-                    "mac2560x1600"
+                    "mac2560x1600",
+                    "appStoreHeader",
+                    "appStoreSearch"
                   ],
                   "type": "string"
                 }
@@ -6070,12 +6093,16 @@
                   "enum": [
                     "iPhoneDynamicIslandMediumPortrait",
                     "iPhoneDynamicIslandMediumLandscape",
+                    "iPhoneDuoPortrait",
+                    "iPhoneDuoLandscape",
                     "iPhone65Portrait",
                     "iPhone65Landscape",
                     "iPhone69Portrait",
                     "iPad13Portrait",
                     "mac1280x800",
-                    "mac2560x1600"
+                    "mac2560x1600",
+                    "appStoreHeader",
+                    "appStoreSearch"
                   ],
                   "type": "string"
                 }
@@ -6269,12 +6296,16 @@
           "enum": [
             "iPhoneDynamicIslandMediumPortrait",
             "iPhoneDynamicIslandMediumLandscape",
+            "iPhoneDuoPortrait",
+            "iPhoneDuoLandscape",
             "iPhone65Portrait",
             "iPhone65Landscape",
             "iPhone69Portrait",
             "iPad13Portrait",
             "mac1280x800",
-            "mac2560x1600"
+            "mac2560x1600",
+            "appStoreHeader",
+            "appStoreSearch"
           ],
           "type": "string"
         },
@@ -6319,12 +6350,16 @@
           "enum": [
             "iPhoneDynamicIslandMediumPortrait",
             "iPhoneDynamicIslandMediumLandscape",
+            "iPhoneDuoPortrait",
+            "iPhoneDuoLandscape",
             "iPhone65Portrait",
             "iPhone65Landscape",
             "iPhone69Portrait",
             "iPad13Portrait",
             "mac1280x800",
-            "mac2560x1600"
+            "mac2560x1600",
+            "appStoreHeader",
+            "appStoreSearch"
           ],
           "type": "string"
         },
@@ -6670,12 +6705,16 @@
           "enum": [
             "iPhoneDynamicIslandMediumPortrait",
             "iPhoneDynamicIslandMediumLandscape",
+            "iPhoneDuoPortrait",
+            "iPhoneDuoLandscape",
             "iPhone65Portrait",
             "iPhone65Landscape",
             "iPhone69Portrait",
             "iPad13Portrait",
             "mac1280x800",
-            "mac2560x1600"
+            "mac2560x1600",
+            "appStoreHeader",
+            "appStoreSearch"
           ],
           "type": "string"
         },
@@ -8346,12 +8385,16 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             },
@@ -8389,12 +8432,16 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             },
@@ -8740,12 +8787,16 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             },
@@ -9162,12 +9213,16 @@
                   "enum": [
                     "iPhoneDynamicIslandMediumPortrait",
                     "iPhoneDynamicIslandMediumLandscape",
+                    "iPhoneDuoPortrait",
+                    "iPhoneDuoLandscape",
                     "iPhone65Portrait",
                     "iPhone65Landscape",
                     "iPhone69Portrait",
                     "iPad13Portrait",
                     "mac1280x800",
-                    "mac2560x1600"
+                    "mac2560x1600",
+                    "appStoreHeader",
+                    "appStoreSearch"
                   ],
                   "type": "string"
                 },
@@ -9175,12 +9230,16 @@
                   "enum": [
                     "iPhoneDynamicIslandMediumPortrait",
                     "iPhoneDynamicIslandMediumLandscape",
+                    "iPhoneDuoPortrait",
+                    "iPhoneDuoLandscape",
                     "iPhone65Portrait",
                     "iPhone65Landscape",
                     "iPhone69Portrait",
                     "iPad13Portrait",
                     "mac1280x800",
-                    "mac2560x1600"
+                    "mac2560x1600",
+                    "appStoreHeader",
+                    "appStoreSearch"
                   ],
                   "type": "string"
                 },
@@ -9188,12 +9247,16 @@
                   "enum": [
                     "iPhoneDynamicIslandMediumPortrait",
                     "iPhoneDynamicIslandMediumLandscape",
+                    "iPhoneDuoPortrait",
+                    "iPhoneDuoLandscape",
                     "iPhone65Portrait",
                     "iPhone65Landscape",
                     "iPhone69Portrait",
                     "iPad13Portrait",
                     "mac1280x800",
-                    "mac2560x1600"
+                    "mac2560x1600",
+                    "appStoreHeader",
+                    "appStoreSearch"
                   ],
                   "type": "string"
                 }
@@ -9209,12 +9272,16 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             }
@@ -10673,7 +10740,7 @@
         "openWorldHint": true,
         "readOnlyHint": true
       },
-      "description": "Prepare Core-owned Shipping evidence; ASC GETs and private local assets only, no remote writes. Default/infer derives existing categories and compatible project specifications through Core. Poll the same preparation arguments while preparing; never execute before prepared. Review exact locales, field facts, replacement counts and blockers. Metadata is category-level with the existing six-field rules; field filters are rejected, never silently ignored. Screenshot destinations are resolved independently per locale: one available specification per ASC display type, with Portrait preferred only when both orientations are available. Explicit single-orientation intent is preserved and unavailable explicit orientation blocks rather than being substituted. Use exact project/session authority. Reuse the same operation reference to observe uncertain results; do not replay the Ship. MCP OFF closes all tools; after re-enabling MCP observe the same operation. Publishing OFF permits observation only. No caller approval, credentials, Target overrides, raw effects or retry flags. No App Review, release, build or TestFlight. Repository Plugin Shipping orchestration is available; installed acceptance is separate.",
+      "description": "Prepare Core-owned Shipping evidence; ASC GETs and private local assets only, no remote writes. Default/infer derives saved eligible content. Screenshots means device screenshots only; assets means Header and Search; media combines both; everything includes metadata. Poll the same preparation arguments while preparing; never execute before prepared. Review exact locales, fields, Asset Library placement types and groups, replacement counts and blockers. A historical operation is marked legacy and retains its original displayType. Metadata keeps the existing six-field rules. One specification is selected per placement type and group; explicit single-orientation intent is preserved. Use exact project/session authority. Reuse the same operation reference to observe uncertain results; do not replay the Ship. MCP OFF closes all tools; after re-enabling MCP observe the same operation. Publishing OFF permits observation only. No caller approval, credentials, Target overrides, raw effects or retry flags. No App Review, release, build or TestFlight. Repository Plugin Shipping orchestration is available; installed acceptance is separate.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
@@ -10682,6 +10749,9 @@
               "screenshots",
               "metadata",
               "both",
+              "assets",
+              "media",
+              "everything",
               "infer"
             ],
             "type": "string"
@@ -10710,16 +10780,20 @@
               "enum": [
                 "iPhoneDynamicIslandMediumPortrait",
                 "iPhoneDynamicIslandMediumLandscape",
+                "iPhoneDuoPortrait",
+                "iPhoneDuoLandscape",
                 "iPhone65Portrait",
                 "iPhone65Landscape",
                 "iPhone69Portrait",
                 "iPad13Portrait",
                 "mac1280x800",
-                "mac2560x1600"
+                "mac2560x1600",
+                "appStoreHeader",
+                "appStoreSearch"
               ],
               "type": "string"
             },
-            "maxItems": 6,
+            "maxItems": 20,
             "type": "array"
           }
         },
@@ -10748,7 +10822,7 @@
           },
           "contract": {
             "enum": [
-              "mcp-shipping-01"
+              "mcp-shipping-02"
             ],
             "type": "string"
           },
@@ -10932,6 +11006,13 @@
               {
                 "additionalProperties": false,
                 "properties": {
+                  "api": {
+                    "enum": [
+                      "asset_library",
+                      "legacy"
+                    ],
+                    "type": "string"
+                  },
                   "appName": {
                     "maxLength": 1024,
                     "type": "string"
@@ -10939,6 +11020,53 @@
                   "content": {
                     "maxLength": 1024,
                     "type": "string"
+                  },
+                  "destinations": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "category": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "locale": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "placementGroup": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "placementType": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "replacementCount": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "specification": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "category",
+                        "count",
+                        "locale",
+                        "placementGroup",
+                        "placementType",
+                        "replacementCount",
+                        "specification"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 4096,
+                    "type": "array"
                   },
                   "facts": {
                     "items": {
@@ -11054,8 +11182,10 @@
                   }
                 },
                 "required": [
+                  "api",
                   "appName",
                   "content",
+                  "destinations",
                   "facts",
                   "locales",
                   "localesToCreate",
@@ -11161,7 +11291,7 @@
           },
           "contract": {
             "enum": [
-              "mcp-shipping-01"
+              "mcp-shipping-02"
             ],
             "type": "string"
           },
@@ -11345,6 +11475,13 @@
               {
                 "additionalProperties": false,
                 "properties": {
+                  "api": {
+                    "enum": [
+                      "asset_library",
+                      "legacy"
+                    ],
+                    "type": "string"
+                  },
                   "appName": {
                     "maxLength": 1024,
                     "type": "string"
@@ -11352,6 +11489,53 @@
                   "content": {
                     "maxLength": 1024,
                     "type": "string"
+                  },
+                  "destinations": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "category": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "locale": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "placementGroup": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "placementType": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "replacementCount": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "specification": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "category",
+                        "count",
+                        "locale",
+                        "placementGroup",
+                        "placementType",
+                        "replacementCount",
+                        "specification"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 4096,
+                    "type": "array"
                   },
                   "facts": {
                     "items": {
@@ -11467,8 +11651,10 @@
                   }
                 },
                 "required": [
+                  "api",
                   "appName",
                   "content",
+                  "destinations",
                   "facts",
                   "locales",
                   "localesToCreate",
@@ -11568,7 +11754,7 @@
           },
           "contract": {
             "enum": [
-              "mcp-shipping-01"
+              "mcp-shipping-02"
             ],
             "type": "string"
           },
@@ -11752,6 +11938,13 @@
               {
                 "additionalProperties": false,
                 "properties": {
+                  "api": {
+                    "enum": [
+                      "asset_library",
+                      "legacy"
+                    ],
+                    "type": "string"
+                  },
                   "appName": {
                     "maxLength": 1024,
                     "type": "string"
@@ -11759,6 +11952,53 @@
                   "content": {
                     "maxLength": 1024,
                     "type": "string"
+                  },
+                  "destinations": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "category": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "locale": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "placementGroup": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "placementType": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        },
+                        "replacementCount": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "specification": {
+                          "maxLength": 1024,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "category",
+                        "count",
+                        "locale",
+                        "placementGroup",
+                        "placementType",
+                        "replacementCount",
+                        "specification"
+                      ],
+                      "type": "object"
+                    },
+                    "maxItems": 4096,
+                    "type": "array"
                   },
                   "facts": {
                     "items": {
@@ -11874,8 +12114,10 @@
                   }
                 },
                 "required": [
+                  "api",
                   "appName",
                   "content",
+                  "destinations",
                   "facts",
                   "locales",
                   "localesToCreate",

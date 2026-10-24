@@ -1277,7 +1277,8 @@ export type BindTargetArguments = {
 };
 
 export type AdaptScreenshotSpecArguments = {
-  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "creationMode"?: "copyFirst" | "blank";
+  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   // JSON Schema: {"minimum": 1}
   "expectedProjectRevision": number;
   // JSON Schema: {"format": "uuid", "maxLength": 36, "minLength": 36}
@@ -1290,14 +1291,14 @@ export type AdaptScreenshotSpecArguments = {
 
 export type AdaptScreenshotSpecResult = {
   "activeLocale": string;
-  "activeSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "activeSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   // JSON Schema: {"minimum": 0}
   "committedGeneration": number;
   "completeness": InspectLocalizationResultVariant0Completeness;
   "contract": "mcp-adaptive-01";
   "created": boolean;
   "defaultLocale": string;
-  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   "exists": boolean;
   // JSON Schema: {"maxItems": 50}
   "locales": Array<AdaptScreenshotSpecResultLocalesItem>;
@@ -1305,7 +1306,7 @@ export type AdaptScreenshotSpecResult = {
   "persistence": InspectLocalizationResultVariant0Persistence;
   // JSON Schema: {"maxItems": 50}
   "primaryLocales": Array<AdaptScreenshotSpecResultLocalesItem>;
-  "primarySpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "primarySpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   // JSON Schema: {"format": "uuid", "maxLength": 36, "minLength": 36}
   "projectID": string;
   // JSON Schema: {"minimum": 1}
@@ -1349,7 +1350,7 @@ export type InspectProjectArgumentsVariant0 = {
 export type InspectProjectArgumentsVariant1 = {
   // JSON Schema: {"minimum": 0}
   "cursor"?: number;
-  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   // JSON Schema: {"maximum": 50, "minimum": 1}
   "limit"?: number;
   // JSON Schema: {"format": "uuid", "maxLength": 36, "minLength": 36}
@@ -1362,11 +1363,11 @@ export type InspectProjectArgumentsVariant1 = {
 
 export type InspectProjectResultVariant0 = {
   "activeLocale": string;
-  "activeSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "activeSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   "completeness": InspectLocalizationResultVariant0Completeness;
   "contract": "mcp-adaptive-01";
   "defaultLocale": string;
-  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "destinationSpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   "exists": boolean;
   // JSON Schema: {"maxItems": 50}
   "locales": Array<AdaptScreenshotSpecResultLocalesItem>;
@@ -1374,7 +1375,7 @@ export type InspectProjectResultVariant0 = {
   "persistence": InspectLocalizationResultVariant0Persistence;
   // JSON Schema: {"maxItems": 50}
   "primaryLocales": Array<AdaptScreenshotSpecResultLocalesItem>;
-  "primarySpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "primarySpecification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
   // JSON Schema: {"format": "uuid", "maxLength": 36, "minLength": 36}
   "projectID": string;
   // JSON Schema: {"minimum": 1}
@@ -1441,13 +1442,13 @@ export type ListScreenshotSpecsResult = {
 
 export type ListScreenshotSpecsResultDefaults = {
   "devices": ListScreenshotSpecsResultDefaultsDevices;
-  "global": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "global": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
 };
 
 export type ListScreenshotSpecsResultDefaultsDevices = {
-  "iPad": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
-  "iPhone": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
-  "mac": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "iPad": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
+  "iPhone": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
+  "mac": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
 };
 
 export type ListScreenshotSpecsResultSpecificationsItem = {
@@ -1478,7 +1479,7 @@ export type SetScreenshotSourceArgumentsVariant0 = {
 export type SetScreenshotSourceArgumentsVariant0Scope = {
   // JSON Schema: {"maxLength": 64, "minLength": 1}
   "locale": string;
-  "specification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600";
+  "specification": "iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch";
 };
 
 export type SetScreenshotSourceArgumentsVariant1 = {
@@ -1578,20 +1579,20 @@ export type ListMockupsResultItemsItem = {
 };
 
 export type PrepareShippingArguments = {
-  "content"?: "screenshots" | "metadata" | "both" | "infer";
+  "content"?: "screenshots" | "metadata" | "both" | "assets" | "media" | "everything" | "infer";
   // JSON Schema: {"maxItems": 50}
   "locales"?: Array<string>;
   // JSON Schema: {"format": "uuid", "maxLength": 36}
   "projectID": string;
   // JSON Schema: {"format": "uuid", "maxLength": 36}
   "projectSessionID": string;
-  // JSON Schema: {"maxItems": 6}
-  "specifications"?: Array<"iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600">;
+  // JSON Schema: {"maxItems": 20}
+  "specifications"?: Array<"iPhoneDynamicIslandMediumPortrait" | "iPhoneDynamicIslandMediumLandscape" | "iPhoneDuoPortrait" | "iPhoneDuoLandscape" | "iPhone65Portrait" | "iPhone65Landscape" | "iPhone69Portrait" | "iPad13Portrait" | "mac1280x800" | "mac2560x1600" | "appStoreHeader" | "appStoreSearch">;
 };
 
 export type PrepareShippingResult = {
   "continuationRef": string | null;
-  "contract": "mcp-shipping-01";
+  "contract": "mcp-shipping-02";
   "operationRef": string | null;
   // JSON Schema: {"maxItems": 4096}
   "outcomes": Array<PrepareShippingResultOutcomesItem>;
@@ -1638,10 +1639,13 @@ export type PrepareShippingResultOutcomesItemProgressVariant0 = {
 };
 
 export type PrepareShippingResultReviewVariant0 = {
+  "api": "asset_library" | "legacy";
   // JSON Schema: {"maxLength": 1024}
   "appName": string;
   // JSON Schema: {"maxLength": 1024}
   "content": string;
+  // JSON Schema: {"maxItems": 4096}
+  "destinations": Array<PrepareShippingResultReviewVariant0DestinationsItem>;
   // JSON Schema: {"maxItems": 4096}
   "facts": Array<PrepareShippingResultReviewVariant0FactsItem>;
   // JSON Schema: {"maxItems": 4096}
@@ -1654,6 +1658,23 @@ export type PrepareShippingResultReviewVariant0 = {
   "screenshots": Array<PrepareShippingResultReviewVariant0ScreenshotsItem>;
   // JSON Schema: {"maxLength": 1024}
   "version": string;
+};
+
+export type PrepareShippingResultReviewVariant0DestinationsItem = {
+  // JSON Schema: {"maxLength": 1024}
+  "category": string;
+  // JSON Schema: {"minimum": 0}
+  "count": number;
+  // JSON Schema: {"maxLength": 1024}
+  "locale": string;
+  // JSON Schema: {"maxLength": 1024}
+  "placementGroup": string;
+  // JSON Schema: {"maxLength": 1024}
+  "placementType": string;
+  // JSON Schema: {"minimum": 0}
+  "replacementCount": number;
+  // JSON Schema: {"maxLength": 1024}
+  "specification": string;
 };
 
 export type PrepareShippingResultReviewVariant0FactsItem = {

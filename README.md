@@ -45,7 +45,7 @@ Install Shipper Plugin for me. Run these exact commands:
 codex plugin marketplace add shipper-screenshots/shipper-plugin
 codex plugin add shipper@shipper
 
-Then verify that shipper@shipper version 1.0.1 is installed and enabled.
+Then verify that shipper@shipper version 1.0.2 is installed and enabled.
 Do not modify Shipper.app or any Shipper project.
 ```
 
@@ -57,7 +57,7 @@ To confirm the installation manually, run:
 codex plugin list --json
 ```
 
-The list should contain `shipper@shipper`, version `1.0.1`, with the Plugin enabled.
+The list should contain `shipper@shipper`, version `1.0.2`, with the Plugin enabled.
 
 ## Prepare your Screenshot Folder
 

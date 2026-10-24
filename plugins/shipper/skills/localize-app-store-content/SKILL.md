@@ -44,6 +44,8 @@ For Free or UNKNOWN, do not call `apply_localization`, use `edit_canvas` as a wo
 
 Verify the intended project and compatibility under shared authority. Establish the exact requested Canvases/specs and Metadata fields, resolving names/order to observed IDs.
 
+Treat iPhone Duo as a device screenshot specification. Treat Header and Search as separate editable App Store assets with exactly one Canvas per requested format and locale. Localize an existing asset only when it is in the user's requested scope; localization must not create a missing Header or Search, add a second Canvas, or publish either asset.
+
 `list_locales` gives existing project identities; it is not an exhaustive supported-language catalog. Use `inspect_localization` without a target or with `targetIntent` to obtain `availableLocales`, `localeAuthority` and resolution. Require `localeAuthority: selected_target`; only `available: true` authorizes a target, while `existsInProject` distinguishes availability from existing content. Project-only authority is diagnostic and cannot authorize Plugin localization.
 
 Use an exact available identifier, or the sole compatible language/script match. `target_locale_ambiguous` requires a choice; `target_locale_unavailable` stops the batch before translation after the bounded Target verification above. Arabic may resolve to the sole `ar-SA`; Portuguese with `pt-BR` and `pt-PT` is ambiguous. Preserve Chinese script distinctions. Never invent generic `ar`, `de`, `fr` or `pt`, substitute a regional sibling, or derive identity from display/folder names. A user writing in French requests no locale by itself.

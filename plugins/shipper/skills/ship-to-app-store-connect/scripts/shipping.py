@@ -18,7 +18,7 @@ def plan(intent):
     if intent.get("fields"):
         return {"action": "clarify_metadata_category"}
     content = intent.get("content", "infer")
-    if content not in ("infer", "screenshots", "metadata", "both"):
+    if content not in ("infer", "screenshots", "metadata", "both", "assets", "media", "everything"):
         return {"action": "clarify_content"}
     if intent.get("localeResolution", "resolved") != "resolved":
         return {"action": "clarify_locale"}
@@ -43,11 +43,22 @@ def next_action(observation, *, known_operation=False, continuation_seen=False):
         return "observe_same" if known_operation else "stop_missing_operation"
     if observation.get("publishing") == "off":
         return "observe_same" if known_operation else "enable_publishing_in_shipper"
+    status = observation.get("status")
+    # Local authoring/saving may advance after admission. Keep observing the
+    # frozen operation; never restart it because its project window changed.
+    if known_operation:
+        if status == "executing" or observation.get("reconciling"):
+            return "observe_same"
+        if status in ("applied", "failed", "cancelled"):
+            return "report_core_outcomes"
+        if status == "unknown" and (observation.get("boundary") or observation.get("persistence", "saved") != "saved"):
+            return "observe_same"
+        if status == "partial" and (observation.get("boundary") or observation.get("persistence", "saved") != "saved"):
+            return "stop_partial_preserve_outcomes"
     if observation.get("boundary") in ("pro", "keychain", "target", "sparse"):
         return "stop_" + observation["boundary"]
     if observation.get("persistence", "saved") != "saved":
         return "reconcile_local_no_ship"
-    status = observation.get("status")
     if status == "preparing":
         return "poll_same_preparation"
     if status == "prepared":

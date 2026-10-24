@@ -1,6 +1,6 @@
 # Lifecycle observations and actions
 
-RESET-E internal orchestration consumes accepted RESET-B/C/D.1/E.1. Current source baseline: MCP 6.4.0, mcp-project-lifecycle-04, bridge v7, 37 tools, with native template discovery/creation and the `mcp-shipping-01` Shipping surface available. Readiness depends on compatible semantics and required tool presence, never total inventory equality. This Plugin policy does not add a permission, daemon or journal.
+RESET-E internal orchestration consumes accepted RESET-B/C/D.1/E.1. Current source baseline: MCP 6.4.0, mcp-project-lifecycle-04, bridge v7, 37 tools, with native template discovery/creation and the `mcp-shipping-02` Shipping surface available. Readiness depends on compatible semantics and required tool presence, never total inventory equality. This Plugin policy does not add a permission, daemon or journal.
 
 ## Invocation and correlation
 
