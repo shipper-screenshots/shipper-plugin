@@ -18,7 +18,7 @@ Your projects remain editable in Shipper throughout the workflow.
 
 ## Requirements
 
-- Shipper installed at `/Applications/Shipper.app` from the [Mac App Store](https://apps.apple.com/app/apple-store/id6769785850).
+- Shipper for macOS 1.2 or later, installed at `/Applications/Shipper.app` from the [Mac App Store](https://apps.apple.com/app/apple-store/id6769785850).
 - **Allow Codex to connect** enabled in **Shipper → Settings… (`⌘,`) → Shipper Plugin**.
 - The current Codex desktop app or Codex CLI, running on the same Mac.
 
